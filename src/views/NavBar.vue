@@ -12,8 +12,20 @@
       >Produkty</router-link
     >
     <template #right>
-      <vs-button color="#fff" flat>Login</vs-button>
-      <vs-button color="#fff" border>Register</vs-button>
+      <vs-button
+        :border="$route.name === 'Login'"
+        color="#fff"
+        flat
+        @click="redirectTo('Login')"
+        >Logowanie</vs-button
+      >
+      <vs-button
+        :border="$route.name === 'Register'"
+        color="#fff"
+        flat
+        @click="redirectTo('Register')"
+        >Rejestracja</vs-button
+      >
     </template>
   </vs-navbar>
 </template>
@@ -21,7 +33,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 @Component
-export default class NavBar extends Vue {}
+export default class NavBar extends Vue {
+  redirectTo(name: string) {
+    if (this.$route.name !== name) this.$router.push({ name: name });
+  }
+}
 </script>
 
 <style scoped>
