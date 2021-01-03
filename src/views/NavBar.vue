@@ -5,11 +5,15 @@
         atBay
       </span>
     </template>
-    <router-link exact-active-class="active" tag="vs-navbar-item" to="/"
-      >Główna</router-link
-    >
-    <router-link exact-active-class="active" tag="vs-navbar-item" to="/produkty"
-      >Produkty</router-link
+    <vs-navbar-item :active="active === 'Home'">
+      <router-link exact-active-class="active" tag="span" to="/"
+        >Główna</router-link
+      >
+    </vs-navbar-item>
+    <vs-navbar-item :active="active === 'Products'">
+      <router-link exact-active-class="active" tag="span" to="/produkty"
+        >Produkty</router-link
+      ></vs-navbar-item
     >
     <template #right>
       <vs-button
@@ -36,6 +40,9 @@ import { Component, Vue } from "vue-property-decorator";
 export default class NavBar extends Vue {
   redirectTo(name: string) {
     if (this.$route.name !== name) this.$router.push({ name: name });
+  }
+  get active() {
+    return this.$route.name;
   }
 }
 </script>

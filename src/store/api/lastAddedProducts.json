@@ -1,0 +1,30 @@
+[
+  {
+    "price": 3.0,
+    "grams": 50,
+    "name": "Lody truskawkowe",
+    "uuid": "qwert3456789",
+    "image": "https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/styles/zdjecie_glowne/public/lody_truskawkowe.jpg?itok=sNJZkPHj",
+    "description":
+    "Lorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum"
+  },
+  {
+    "price": 3.0,
+    "grams": 50,
+    "name": "Lody waniliowe",
+    "uuid": "vemflkvmdlk342342",
+    "image": "https://www.opowiastka.com/wp-content/uploads/2018/10/Lody-waniliowe.jpg",
+    "description":
+    "Lorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum"
+
+  },
+  {
+    "price": 3.0,
+    "grams": 50,
+    "name": "Lody czekoladowe",
+    "uuid": "rtgbvcfghn456788765",
+    "image": "https://lh3.googleusercontent.com/proxy/5yIWiQGaHWtsXbWfeP7Y1w6UxjH7BTwTIQDQgxlct2QYYms2IS67xr3G0TENRTwgskT1OIsTz8n4Upd5g42JcoB7eAA1jlE7B34JgLncr1TR4a0MhvArAU3S6dEBSFn70EhMUxuwEVHRUGuQfydcfBmb",
+    "description":
+    "Lorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum"
+  }
+]
