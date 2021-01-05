@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <loading />
     <nav-bar />
     <router-view />
   </div>
@@ -8,8 +9,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import NavBar from "@/views/NavBar.vue";
+import Loading from "@/views/Loading.vue";
 
-@Component({ components: { NavBar } })
+@Component({ components: { NavBar, Loading } })
 export default class App extends Vue {}
 </script>
 <style lang="scss">

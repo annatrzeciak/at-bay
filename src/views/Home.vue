@@ -45,9 +45,9 @@ header {
     url("../assets/header.jpg");
   background-size: cover;
   background-position: center;
-  margin-left: -8px;
+  margin-left: -23px;
   margin-top: -68px;
-  padding-top: 68px;
+  padding: 68px 15px 15px;
   box-sizing: border-box;
   text-shadow: black 0px 0px 6px;
   color: white;
