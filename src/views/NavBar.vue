@@ -17,6 +17,7 @@
     >
     <template #right>
       <vs-button
+        v-if="!isLogged"
         :border="$route.name === 'Login'"
         color="#fff"
         flat
@@ -24,11 +25,15 @@
         >Logowanie</vs-button
       >
       <vs-button
+        v-if="!isLogged"
         :border="$route.name === 'Register'"
         color="#fff"
         flat
         @click="redirectTo('Register')"
         >Rejestracja</vs-button
+      >
+      <vs-button v-if="isLogged" color="#fff" flat @click="logoutUser"
+        >Wyloguj</vs-button
       >
     </template>
   </vs-navbar>
@@ -36,13 +41,31 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { namespace } from "vuex-class";
+const authModule = namespace("auth");
+const appModule = namespace("app");
+
 @Component
 export default class NavBar extends Vue {
+  @authModule.Getter("isLogged") isLogged!: boolean;
+  @authModule.Action("logout") logout: any;
+  @appModule.Action("startLoading") startLoading: any;
+  @appModule.Action("stopLoading") stopLoading: any;
   redirectTo(name: string) {
     if (this.$route.name !== name) this.$router.push({ name: name });
   }
   get active() {
     return this.$route.name;
+  }
+  async logoutUser() {
+    this.startLoading();
+    try {
+      await this.logout();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.stopLoading();
+    }
   }
 }
 </script>

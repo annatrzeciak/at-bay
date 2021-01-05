@@ -6,7 +6,8 @@ import router from "@/router";
 export enum AuthActions {
   LOGIN = "login",
   FETCH_USER_PROFILE = "fetchUserProfile",
-  SIGNUP = "signup"
+  SIGNUP = "signup",
+  LOGOUT = "logout"
 }
 
 export enum AuthMutations {
@@ -83,7 +84,17 @@ const actions = {
       await fb.usersCollection
         .doc(user.uid)
         .set({ email: form.email, name: form.name, role: UserRole.USER });
-      await router.push({ name: "Login" });
+      return router.push({ name: "Login" });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  },
+  [AuthActions.LOGOUT]: async ({ commit }: { commit: Commit }) => {
+    try {
+      await fb.auth.signOut;
+
+      commit(AuthMutations.SET_USER_PROFILE, null);
+      return router.push({ name: "Login" });
     } catch (e) {
       return Promise.reject(e);
     }

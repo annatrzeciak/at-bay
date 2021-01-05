@@ -4,8 +4,8 @@ import Home from "@/views/Home.vue";
 import Products from "@/views/Products.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
-import { auth } from "../firebase";
 import Account from "@/views/Account.vue";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -47,12 +47,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
+  const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
 
-  if (requiresAuth && !auth.currentUser) {
-    next('/logowanie')
+  if (requiresAuth && !store.getters["auth/isLogged"]) {
+    next("/logowanie");
   } else {
-    next()
+    next();
   }
-})
+});
 export default router;
