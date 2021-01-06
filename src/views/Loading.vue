@@ -44,7 +44,7 @@ export default class Loading extends Vue {
   @appModule.State("loading") loading: any;
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .loading {
   z-index: -1;
   height: 100vh;

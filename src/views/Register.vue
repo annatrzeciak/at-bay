@@ -1,7 +1,10 @@
 <template>
   <div class="register">
     <h1>Rejestracja</h1>
-    <form class="center content-inputs" @submit.prevent="register">
+    <form
+      class="register__form center content-inputs"
+      @submit.prevent="register"
+    >
       <vs-alert color="danger" v-if="errorMessage">
         <template #title>
           Wystąpił błąd
@@ -41,11 +44,13 @@
           <i class="bx bx-lock-open-alt"></i>
         </template>
       </vs-input>
-      <vs-row align="center">
-        <vs-col type="flex" justify="flex-end">
+
+      <vs-row align="center" class="form__footer">
+        <vs-col type="flex" justify="space-between">
+          <router-link to="/logowanie"> Mam już konto </router-link>
           <vs-button flat primary animation-type="vertical">
-            Zapisz
-            <template #animate> <i class="bx bx-log-in"></i> </template>
+            Wyślij
+            <template #animate> <i class="bx bx-mail-send"></i> </template>
           </vs-button>
         </vs-col>
       </vs-row>
@@ -102,13 +107,29 @@ export default class Register extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.content-inputs {
-  max-width: 300px;
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  & > div {
-    margin-bottom: 10px;
+.register {
+  .content-inputs {
+    max-width: 300px;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+
+    & > div {
+      margin-bottom: 10px;
+    }
+  }
+
+  .form__footer {
+    a {
+      cursor: pointer;
+      color: gray;
+      text-decoration: none;
+      font-size: 0.9rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
 </style>

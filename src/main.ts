@@ -10,10 +10,12 @@ import "boxicons/css/boxicons.min.css";
 Vue.use(Vuesax);
 
 Vue.config.productionTip = false;
-auth.onAuthStateChanged(() => {
+auth.onAuthStateChanged(user => {
   new Vue({
     router,
     store,
     render: h => h(App)
   }).$mount("#app");
+
+  if (user) store.dispatch("auth/fetchUserProfile", user);
 });

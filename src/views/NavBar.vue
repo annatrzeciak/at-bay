@@ -66,8 +66,7 @@ export default class NavBar extends Vue {
         duration: 10000,
         flat: true,
         color: "success",
-        title: "Wylogowywanie zakończone pomyślnie",
-        text: "Możesz teraz korzystać z pełnych możliwości serwisu"
+        title: "Wylogowywanie zakończone pomyślnie"
       });
     } catch (e) {
       this.$vs.notification({
@@ -83,7 +82,7 @@ export default class NavBar extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .navbar--brand {
   font-weight: bold;
   font-size: 1.2rem;
