@@ -7,7 +7,8 @@ export enum AuthActions {
   LOGIN = "login",
   FETCH_USER_PROFILE = "fetchUserProfile",
   SIGNUP = "signup",
-  LOGOUT = "logout"
+  LOGOUT = "logout",
+  RESET_PASSWORD = "resetPassword"
 }
 
 export enum AuthMutations {
@@ -64,9 +65,13 @@ const actions = {
     },
     user: any
   ) => {
-    const userProfile = await fb.usersCollection.doc(user.uid).get();
+    try {
+      const userProfile = await fb.usersCollection.doc(user.uid).get();
 
-    commit(AuthMutations.SET_USER_PROFILE, userProfile.data());
+      commit(AuthMutations.SET_USER_PROFILE, userProfile.data());
+    } catch (e) {
+      return Promise.reject(e);
+    }
   },
   [AuthActions.SIGNUP]: async (
     {
@@ -98,6 +103,12 @@ const actions = {
     } catch (e) {
       return Promise.reject(e);
     }
+  },
+  [AuthActions.RESET_PASSWORD]: async (
+    { commit }: { commit: Commit },
+    email: string
+  ) => {
+    return await fb.auth.sendPasswordResetEmail(email);
   }
 };
 export default {
