@@ -31,18 +31,6 @@ const mutations = {
   ) {
     state.lastAddedProducts = products;
   }
-  // [ProductMutations.SET_FOUND_PRODUCTS](state: ProductState, data) {
-  //   state.foundProducts = data.products;
-  // },
-  // [ProductMutations.SET_SEARCH_VALUE](state: ProductState, value) {
-  //   state.searchValue = value;
-  // },
-  // [ProductMutations.SET_OPENED_PRODUCT_ID](state: ProductState, value) {
-  //   state.openedProductId = value;
-  // },
-  // [ProductMutations.SET_OPENED_PRODUCT_DETAILS](state: ProductState, data) {
-  //   state.openedProductWithDetails = data.product;
-  // }
 };
 
 const actions = {
