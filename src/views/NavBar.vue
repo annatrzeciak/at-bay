@@ -42,6 +42,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
+import translateErrorMessage from "@/utils/errorTranslations";
 const authModule = namespace("auth");
 const appModule = namespace("app");
 
@@ -61,8 +62,20 @@ export default class NavBar extends Vue {
     this.startLoading();
     try {
       await this.logout();
+      this.$vs.notification({
+        duration: 10000,
+        flat: true,
+        color: "success",
+        title: "Wylogowywanie zakończone pomyślnie",
+        text: "Możesz teraz korzystać z pełnych możliwości serwisu"
+      });
     } catch (e) {
-      console.error(e);
+      this.$vs.notification({
+        duration: 10000,
+        color: "danger",
+        title: "Wystąpił błąd podczas wylogowania",
+        text: translateErrorMessage(e)
+      });
     } finally {
       this.stopLoading();
     }

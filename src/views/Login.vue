@@ -25,8 +25,8 @@
           <i class="bx bx-lock-open-alt"></i>
         </template>
       </vs-input>
-      <vs-row :w="12" align="center">
-        <vs-col :w="12" type="flex" justify="flex-end">
+      <vs-row align="center">
+        <vs-col type="flex" justify="flex-end">
           <vs-button flat primary animation-type="vertical">
             Wyślij
             <template #animate><i class="bx bx-log-in"></i></template>
@@ -63,8 +63,21 @@ export default class Login extends Vue {
         email: this.email,
         password: this.password
       });
+      this.$vs.notification({
+        duration: 10000,
+        flat: true,
+        color: "success",
+        title: "Logowanie zakończone pomyślnie",
+        text: "Możesz teraz korzystać z pełnych możliwości serwisu"
+      });
     } catch (e) {
       this.errorMessage = translateErrorMessage(e);
+      this.$vs.notification({
+        duration: 10000,
+        color: "danger",
+        title: "Wystąpił błąd podczas logowania",
+        text: "Popraw dane lub spróbuj później"
+      });
     } finally {
       this.stopLoading();
     }

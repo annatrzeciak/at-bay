@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <header>
-      <vs-row w="12" align="center">
+      <vs-row align="center">
         <vs-col w="4" sm="12" offset="7">
           <h1>Odkryj tradycyjne włoskie smaki</h1>
           <p>
@@ -33,11 +33,11 @@ export default class Home extends Vue {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 header {
   min-height: 100vh;
   height: 100%;
-  width: 100vw;
+  width: calc(100vw + 15px);
   background-image: linear-gradient(
       rgba(0, 0, 0, 0.3) 0%,
       rgba(0, 0, 0, 0.3) 100%
@@ -47,6 +47,7 @@ header {
   background-position: center;
   margin-left: -23px;
   margin-top: -68px;
+  margin-bottom: -68px;
   padding: 68px 15px 15px;
   box-sizing: border-box;
   text-shadow: black 0px 0px 6px;

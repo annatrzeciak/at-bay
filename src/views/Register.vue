@@ -41,8 +41,8 @@
           <i class="bx bx-lock-open-alt"></i>
         </template>
       </vs-input>
-      <vs-row :w="12" align="center">
-        <vs-col :w="12" type="flex" justify="flex-end">
+      <vs-row align="center">
+        <vs-col type="flex" justify="flex-end">
           <vs-button flat primary animation-type="vertical">
             Zapisz
             <template #animate> <i class="bx bx-log-in"></i> </template>
@@ -80,15 +80,28 @@ export default class Register extends Vue {
         email: this.email,
         password: this.password
       });
+      this.$vs.notification({
+        duration: 10000,
+        flat: true,
+        color: "success",
+        title: "Rejestracja nowego użytkownika zakończona pomyślnie",
+        text: "Zaloguj się i korzystaj z pełnych możliwości serwisu"
+      });
     } catch (e) {
       this.errorMessage = translateErrorMessage(e);
+      this.$vs.notification({
+        duration: 10000,
+        color: "danger",
+        title: "Wystąpił błąd podczas rejestracji",
+        text: "sPopraw dane lub spróbuj później"
+      });
     } finally {
       this.stopLoading();
     }
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .content-inputs {
   max-width: 300px;
   width: 100%;
