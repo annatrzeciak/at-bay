@@ -83,7 +83,7 @@ export default class NavBar extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .navbar--brand {
   font-weight: bold;
   font-size: 1.2rem;

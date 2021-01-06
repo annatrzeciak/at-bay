@@ -42,10 +42,14 @@
         </template>
       </vs-input>
       <vs-row align="center">
-        <vs-col type="flex" justify="flex-end">
+        <vs-col type="flex" justify="space-between">
+          <vs-button dark transparent @click="$router.push({ name: 'Login' })">
+            Mam już konto
+          </vs-button>
+
           <vs-button flat primary animation-type="vertical">
-            Zapisz
-            <template #animate> <i class="bx bx-log-in"></i> </template>
+            Wyślij
+            <template #animate> <i class="bx bx-mail-send"></i> </template>
           </vs-button>
         </vs-col>
       </vs-row>

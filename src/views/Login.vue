@@ -25,8 +25,11 @@
           <i class="bx bx-lock-open-alt"></i>
         </template>
       </vs-input>
-      <vs-row align="center">
-        <vs-col type="flex" justify="flex-end">
+      <vs-row align="center" class="form-footer">
+        <vs-col type="flex" justify="space-between">
+          <vs-button dark transparent @click="$router.push({ name: 'Register' })">
+            Nie mam konta
+          </vs-button>
           <vs-button flat primary animation-type="vertical">
             Wyślij
             <template #animate><i class="bx bx-log-in"></i></template>
@@ -84,7 +87,7 @@ export default class Login extends Vue {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 form {
   max-width: 300px;
   width: 100%;
