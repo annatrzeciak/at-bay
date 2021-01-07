@@ -23,12 +23,18 @@ const routes: Array<RouteConfig> = [
   {
     path: "/logowanie",
     name: "Login",
-    component: Login
+    component: Login,
+    meta: {
+      requiresNoAuth: true
+    }
   },
   {
     path: "/rejestracja",
     name: "Register",
-    component: Register
+    component: Register,
+    meta: {
+      requiresNoAuth: true
+    }
   },
   {
     path: "/konto",
@@ -48,9 +54,12 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
+  const requiresNoAuth = to.matched.some(x => x.meta.requiresNoAuth);
 
   if (requiresAuth && !store.getters["auth/isLogged"]) {
     next("/logowanie");
+  } else if (requiresNoAuth && store.getters["auth/isLogged"]) {
+    next("/");
   } else {
     next();
   }

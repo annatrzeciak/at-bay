@@ -51,8 +51,7 @@ const actions = {
         form.password
       );
 
-      await dispatch(AuthActions.FETCH_USER_PROFILE, user);
-      return router.push({ name: "Home" });
+      return dispatch(AuthActions.FETCH_USER_PROFILE, user);
     } catch (e) {
       return Promise.reject(e);
     }
@@ -98,8 +97,7 @@ const actions = {
     try {
       await fb.auth.signOut;
 
-      commit(AuthMutations.SET_USER_PROFILE, null);
-      return router.push({ name: "Login" });
+      return commit(AuthMutations.SET_USER_PROFILE, null);
     } catch (e) {
       return Promise.reject(e);
     }
