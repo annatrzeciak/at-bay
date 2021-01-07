@@ -6,15 +6,15 @@
       </span>
     </template>
     <vs-navbar-item :active="active === 'Home'">
-      <router-link exact-active-class="active" tag="span" to="/"
-        >Główna</router-link
-      >
+      <router-link exact-active-class="active" tag="span" to="/">
+        Główna
+      </router-link>
     </vs-navbar-item>
     <vs-navbar-item :active="active === 'Products'">
-      <router-link exact-active-class="active" tag="span" to="/produkty"
-        >Produkty</router-link
-      ></vs-navbar-item
-    >
+      <router-link exact-active-class="active" tag="span" to="/produkty">
+        Produkty
+      </router-link>
+    </vs-navbar-item>
     <template #right>
       <vs-button
         v-if="!isLogged"
@@ -22,19 +22,32 @@
         color="#fff"
         flat
         @click="redirectTo('Login')"
-        >Logowanie</vs-button
       >
+        Logowanie
+      </vs-button>
       <vs-button
         v-if="!isLogged"
         :border="$route.name === 'Register'"
         color="#fff"
         flat
         @click="redirectTo('Register')"
-        >Rejestracja</vs-button
       >
-      <vs-button v-if="isLogged" color="#fff" flat @click="logoutUser"
-        >Wyloguj</vs-button
-      >
+        Rejestracja
+      </vs-button>
+      <vs-navbar-group v-if="isLogged">
+        {{ userProfile.email }} <i class="bx bxs-down-arrow"></i>
+        <template #items>
+          <vs-navbar-item :active="active == 'Account'">
+            <router-link exact-active-class="active" tag="span" to="/konto">
+              Ustawienia
+            </router-link>
+          </vs-navbar-item>
+
+          <vs-navbar-item @click="logoutUser">
+            Wyloguj
+          </vs-navbar-item>
+        </template>
+      </vs-navbar-group>
     </template>
   </vs-navbar>
 </template>
@@ -49,6 +62,7 @@ const appModule = namespace("app");
 @Component
 export default class NavBar extends Vue {
   @authModule.Getter("isLogged") isLogged!: boolean;
+  @authModule.State("userProfile") userProfile!: object;
   @authModule.Action("logout") logout: any;
   @appModule.Action("startLoading") startLoading: any;
   @appModule.Action("stopLoading") stopLoading: any;
@@ -86,5 +100,8 @@ export default class NavBar extends Vue {
 .navbar--brand {
   font-weight: bold;
   font-size: 1.2rem;
+}
+.vs-navbar__group i {
+  vertical-align: middle;
 }
 </style>

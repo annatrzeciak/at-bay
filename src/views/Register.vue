@@ -12,15 +12,45 @@
         {{ errorMessage }}
       </vs-alert>
 
-      <vs-input block v-model.trim="name" placeholder="Imię (i nazwisko)">
+      <vs-input
+        block
+        v-model.trim="name"
+        placeholder="Imię (i nazwisko)"
+        :state="$v.name.$error ? 'danger' : ''"
+        @keypress="$v.name.$reset"
+      >
         <template #icon>
           <i class="bx bx-user"></i>
         </template>
+        <template #message-danger v-if="$v.name.$error && !$v.name.required">
+          Imię (i nazwisko) jest wymagane
+        </template>
+        <template
+          #message-danger
+          v-else-if="$v.name.$error && !$v.name.minLength"
+        >
+          Minimalna długość to 3 znaki
+        </template>
       </vs-input>
 
-      <vs-input block v-model.trim="email" placeholder="Email">
+      <vs-input
+        block
+        v-model.trim="email"
+        placeholder="Email"
+        :state="$v.email.$error ? 'danger' : ''"
+        @keypress="$v.email.$reset"
+      >
         <template #icon>
           <i class="bx bx-mail-send"></i>
+        </template>
+        <template #message-danger v-if="$v.email.$error && !$v.email.required">
+          Email jest wymagany
+        </template>
+        <template
+          #message-danger
+          v-else-if="$v.email.$error && !$v.email.email"
+        >
+          Zły format adresu email
         </template>
       </vs-input>
 
@@ -29,19 +59,50 @@
         type="password"
         v-model.trim="password"
         placeholder="Hasło"
+        :state="$v.password.$error ? 'danger' : ''"
+        @keypress="$v.password.$reset"
       >
         <template #icon>
           <i class="bx bx-lock-open-alt"></i>
+        </template>
+        <template #message-danger v-if="$v.email.$error && !$v.email.required">
+          Email jest wymagany
+        </template>
+        <template
+          #message-danger
+          v-if="$v.password.$error && !$v.password.required"
+        >
+          Hasło jest wymagane
+        </template>
+        <template
+          #message-danger
+          v-else-if="$v.password.$error && !$v.password.minLength"
+        >
+          Minimalna długość to 6 znaków
         </template>
       </vs-input>
       <vs-input
         block
         type="password"
-        v-model.trim="password2"
+        v-model.trim="repeatPassword"
         placeholder="Powtórz hasło"
+        :state="$v.repeatPassword.$error ? 'danger' : ''"
+        @keypress="$v.repeatPassword.$reset"
       >
         <template #icon>
           <i class="bx bx-lock-open-alt"></i>
+        </template>
+        <template
+          #message-danger
+          v-if="$v.repeatPassword.$error && !$v.repeatPassword.required"
+        >
+          Hasło jest wymagane
+        </template>
+        <template
+          #message-danger
+          v-else-if="$v.repeatPassword.$error && !$v.repeatPassword.sameAsPassword"
+        >
+          Hasła nie są identyczne
         </template>
       </vs-input>
 
@@ -64,8 +125,27 @@ import { namespace } from "vuex-class";
 const authModule = namespace("auth");
 const appModule = namespace("app");
 import translateErrorMessage from "@/utils/errorTranslations";
+import { validationMixin } from "vuelidate";
+import { email, required, minLength, sameAs } from "vuelidate/lib/validators";
+
 @Component({
-  components: {}
+  components: {},
+  mixins: [validationMixin],
+  validations: {
+    name: { required, minLength: minLength(3) },
+    email: {
+      required,
+      email
+    },
+    password: {
+      minLength: minLength(6),
+      required
+    },
+    repeatPassword: {
+      required,
+      sameAsPassword: sameAs("password")
+    }
+  }
 })
 export default class Register extends Vue {
   @authModule.Action("signup") registerNewUser: any;
@@ -75,33 +155,45 @@ export default class Register extends Vue {
   name = "";
   email = "";
   password = "";
-  password2 = "";
+  repeatPassword = "";
   errorMessage = "";
+
   async register() {
-    try {
-      this.startLoading();
-      await this.registerNewUser({
-        name: this.name,
-        email: this.email,
-        password: this.password
-      });
+    this.$v.$touch();
+    if (!this.$v.$invalid) {
+      try {
+        this.startLoading();
+        await this.registerNewUser({
+          name: this.name,
+          email: this.email,
+          password: this.password
+        });
+        this.$vs.notification({
+          duration: 10000,
+          flat: true,
+          color: "success",
+          title: "Rejestracja nowego użytkownika zakończona pomyślnie",
+          text: "Zaloguj się i korzystaj z pełnych możliwości serwisu"
+        });
+      } catch (e) {
+        this.errorMessage = translateErrorMessage(e);
+        this.$vs.notification({
+          duration: 10000,
+          color: "danger",
+          title: "Wystąpił błąd podczas rejestracji",
+          text: "Popraw dane lub spróbuj później"
+        });
+      } finally {
+        this.stopLoading();
+      }
+    } else {
       this.$vs.notification({
         duration: 10000,
         flat: true,
-        color: "success",
-        title: "Rejestracja nowego użytkownika zakończona pomyślnie",
-        text: "Zaloguj się i korzystaj z pełnych możliwości serwisu"
-      });
-    } catch (e) {
-      this.errorMessage = translateErrorMessage(e);
-      this.$vs.notification({
-        duration: 10000,
         color: "danger",
-        title: "Wystąpił błąd podczas rejestracji",
-        text: "sPopraw dane lub spróbuj później"
+        title: "Wprowadzono nieprawidłowe dane",
+        text: "Popraw dane i spróbuj ponownie"
       });
-    } finally {
-      this.stopLoading();
     }
   }
 }
