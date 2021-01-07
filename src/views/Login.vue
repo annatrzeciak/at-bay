@@ -9,9 +9,24 @@
         </template>
         {{ errorMessage }}
       </vs-alert>
-      <vs-input block v-model.trim="email" placeholder="Email">
+      <vs-input
+        block
+        v-model.trim="email"
+        placeholder="Email"
+        :state="$v.email.$error ? 'danger' : ''"
+        @keypress="$v.email.$reset"
+      >
         <template #icon>
           <i class="bx bx-mail-send"></i>
+        </template>
+        <template #message-danger v-if="$v.email.$error && !$v.email.required">
+          Email jest wymagany
+        </template>
+        <template
+          #message-danger
+          v-else-if="$v.email.$error && !$v.email.email"
+        >
+          Zły format adresu email
         </template>
       </vs-input>
 
@@ -20,9 +35,17 @@
         type="password"
         v-model.trim="password"
         placeholder="Hasło"
+        :state="$v.password.$error ? 'danger' : ''"
+        @keypress="$v.password.$reset"
       >
         <template #icon>
           <i class="bx bx-lock-open-alt"></i>
+        </template>
+        <template
+          #message-danger
+          v-if="$v.password.$error && !$v.password.required"
+        >
+          Hasło jest wymagane
         </template>
       </vs-input>
       <vs-row align="center" class="form__footer">
@@ -69,12 +92,25 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
+import { validationMixin } from "vuelidate";
+import { required, email } from "vuelidate/lib/validators";
+
 const authModule = namespace("auth");
 const appModule = namespace("app");
 import translateErrorMessage from "@/utils/errorTranslations";
 
 @Component({
-  components: {}
+  components: {},
+  mixins: [validationMixin],
+  validations: {
+    email: {
+      required,
+      email
+    },
+    password: {
+      required
+    }
+  }
 })
 export default class Login extends Vue {
   @authModule.Action("login") loginUser!: any;
@@ -87,30 +123,43 @@ export default class Login extends Vue {
   password = "";
   errorMessage = "";
   openedForgotPasswordModal = false;
+
   async login() {
-    try {
-      this.startLoading();
-      await this.loginUser({
-        email: this.email,
-        password: this.password
-      });
+    this.$v.$touch();
+    if (!this.$v.$invalid) {
+      try {
+        this.startLoading();
+        await this.loginUser({
+          email: this.email,
+          password: this.password
+        });
+        this.$vs.notification({
+          duration: 10000,
+          flat: true,
+          color: "success",
+          title: "Logowanie zakończone pomyślnie",
+          text: "Możesz teraz korzystać z pełnych możliwości serwisu"
+        });
+      } catch (e) {
+        this.errorMessage = translateErrorMessage(e);
+        this.$vs.notification({
+          duration: 10000,
+          flat: true,
+          color: "danger",
+          title: "Wystąpił błąd podczas logowania",
+          text: "Popraw dane lub spróbuj później"
+        });
+      } finally {
+        this.stopLoading();
+      }
+    } else {
       this.$vs.notification({
         duration: 10000,
         flat: true,
-        color: "success",
-        title: "Logowanie zakończone pomyślnie",
-        text: "Możesz teraz korzystać z pełnych możliwości serwisu"
-      });
-    } catch (e) {
-      this.errorMessage = translateErrorMessage(e);
-      this.$vs.notification({
-        duration: 10000,
         color: "danger",
-        title: "Wystąpił błąd podczas logowania",
-        text: "Popraw dane lub spróbuj później"
+        title: "Wprowadzono nieprawidłowe dane",
+        text: "Popraw dane i spróbuj ponownie"
       });
-    } finally {
-      this.stopLoading();
     }
   }
   async sendResetPasswordEmail() {
@@ -127,6 +176,7 @@ export default class Login extends Vue {
     } catch (e) {
       this.$vs.notification({
         duration: 10000,
+        flat: true,
         color: "danger",
         title: "Wystąpił błąd podczas restartu hasła",
         text: translateErrorMessage(e)
