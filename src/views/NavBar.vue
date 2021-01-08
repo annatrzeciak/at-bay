@@ -1,17 +1,25 @@
 <template>
-  <vs-navbar color="primary" fixed text-white square center-collapsed>
+  <vs-navbar color="dark" fixed text-white square center-collapsed>
     <template #left>
       <span class="navbar--brand">
         atBay
       </span>
     </template>
     <vs-navbar-item :active="active === 'Home'">
-      <router-link exact-active-class="active" tag="span" to="/">
+      <router-link
+        exact-active-class="active"
+        tag="span"
+        :to="{ name: 'Home' }"
+      >
         Główna
       </router-link>
     </vs-navbar-item>
     <vs-navbar-item :active="active === 'Products'">
-      <router-link exact-active-class="active" tag="span" to="/produkty">
+      <router-link
+        exact-active-class="active"
+        tag="span"
+        :to="{ name: 'Products' }"
+      >
         Produkty
       </router-link>
     </vs-navbar-item>
@@ -37,8 +45,24 @@
       <vs-navbar-group v-if="isLogged">
         {{ userProfile.email }} <i class="bx bxs-down-arrow"></i>
         <template #items>
-          <vs-navbar-item :active="active == 'Account'">
-            <router-link exact-active-class="active" tag="span" to="/konto">
+          <vs-navbar-item :active="active === 'Users'">
+            <router-link
+              v-if="
+                userProfile.role === 'admin' || userProfile.role === 'moderator'
+              "
+              exact-active-class="active"
+              tag="span"
+              :to="{ name: 'Users' }"
+            >
+              Użytkownicy
+            </router-link>
+          </vs-navbar-item>
+          <vs-navbar-item :active="active === 'Settings'">
+            <router-link
+              exact-active-class="active"
+              tag="span"
+              :to="{ name: 'Settings' }"
+            >
               Ustawienia
             </router-link>
           </vs-navbar-item>
@@ -56,16 +80,18 @@
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import translateErrorMessage from "@/utils/errorTranslations";
+import { User } from "@/types/types";
 const authModule = namespace("auth");
 const appModule = namespace("app");
 
 @Component
 export default class NavBar extends Vue {
   @authModule.Getter("isLogged") isLogged!: boolean;
-  @authModule.State("userProfile") userProfile!: object;
+  @authModule.Getter("userProfile") userProfile!: User | null;
   @authModule.Action("logout") logout: any;
   @appModule.Action("startLoading") startLoading: any;
   @appModule.Action("stopLoading") stopLoading: any;
+
   redirectTo(name: string) {
     if (this.$route.name !== name) this.$router.push({ name: name });
   }

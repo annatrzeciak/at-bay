@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login content">
     <h1>Logowanie</h1>
 
     <form @submit.prevent="login" class="login__form center content-inputs">

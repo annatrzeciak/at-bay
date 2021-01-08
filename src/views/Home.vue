@@ -1,17 +1,19 @@
 <template>
   <div class="home">
     <header>
-      <vs-row align="center">
-        <vs-col w="4" sm="12" offset="7">
-          <h1>Odkryj tradycyjne włoskie smaki</h1>
-          <p>
-            Nasze dusze podróżników i odkrywców, poprowadziły nas ku poznaniu i
-            unowocześnieniu tradycyjnych receptur włoskich. Uważamy, że każda
-            receptura nawet ta najbardziej tradycyjna powinna zostać dostosowana
-            do wymagań współczesnej kultury życia.
-          </p>
-        </vs-col>
-      </vs-row>
+      <div class="content">
+        <vs-row align="center">
+          <vs-col w="4" sm="12" offset="7">
+            <h1>Odkryj tradycyjne włoskie smaki</h1>
+            <p>
+              Nasze dusze podróżników i odkrywców, poprowadziły nas ku poznaniu
+              i unowocześnieniu tradycyjnych receptur włoskich. Uważamy, że
+              każda receptura nawet ta najbardziej tradycyjna powinna zostać
+              dostosowana do wymagań współczesnej kultury życia.
+            </p>
+          </vs-col>
+        </vs-row>
+      </div>
     </header>
   </div>
 </template>
