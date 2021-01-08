@@ -4,7 +4,8 @@ import Home from "@/views/Home.vue";
 import Products from "@/views/Products.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
-import Account from "@/views/Account.vue";
+import Settings from "@/views/Account/Settings.vue";
+import Users from "@/views/Account/Users.vue";
 import store from "@/store";
 
 Vue.use(VueRouter);
@@ -37,9 +38,18 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
-    path: "/konto",
-    name: "Account",
-    component: Account,
+    path: "/uzytkownicy",
+    name: "Users",
+    component: Users,
+    meta: {
+      requiresAuth: true,
+      requiresModerator: true
+    }
+  },
+  {
+    path: "/ustawienia",
+    name: "Settings",
+    component: Settings,
     meta: {
       requiresAuth: true
     }
@@ -55,10 +65,16 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   const requiresNoAuth = to.matched.some(x => x.meta.requiresNoAuth);
+  const requiresModerator = to.matched.some(x => x.meta.requiresModerator);
+  const role = store.getters["auth/userProfile"]
+    ? store.getters["auth/userProfile"].role
+    : null;
 
   if (requiresAuth && !store.getters["auth/isLogged"]) {
     next("/logowanie");
   } else if (requiresNoAuth && store.getters["auth/isLogged"]) {
+    next("/");
+  } else if (requiresModerator && !(role === "moderator" || role === "admin")) {
     next("/");
   } else {
     next();

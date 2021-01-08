@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div class="register content">
     <h1>Rejestracja</h1>
     <form
       class="register__form center content-inputs"
@@ -100,7 +100,9 @@
         </template>
         <template
           #message-danger
-          v-else-if="$v.repeatPassword.$error && !$v.repeatPassword.sameAsPassword"
+          v-else-if="
+            $v.repeatPassword.$error && !$v.repeatPassword.sameAsPassword
+          "
         >
           Hasła nie są identyczne
         </template>
@@ -173,7 +175,7 @@ export default class Register extends Vue {
           flat: true,
           color: "success",
           title: "Rejestracja nowego użytkownika zakończona pomyślnie",
-          text: "Zaloguj się i korzystaj z pełnych możliwości serwisu"
+          text: "Teraz możesz korzystać z pełnych możliwości serwisu"
         });
       } catch (e) {
         this.errorMessage = translateErrorMessage(e);

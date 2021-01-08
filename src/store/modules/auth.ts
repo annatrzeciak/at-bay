@@ -1,26 +1,29 @@
 import { User, UserRole } from "@/types/types";
 import { Commit, Dispatch } from "vuex";
 import * as fb from "@/firebase";
-import router from "@/router";
 
 export enum AuthActions {
   LOGIN = "login",
   FETCH_USER_PROFILE = "fetchUserProfile",
   SIGNUP = "signup",
   LOGOUT = "logout",
-  RESET_PASSWORD = "resetPassword"
+  RESET_PASSWORD = "resetPassword",
+  FETCH_USERS_LIST = "fetchUsersList"
 }
 
 export enum AuthMutations {
-  SET_USER_PROFILE = "setUserProfile"
+  SET_USER_PROFILE = "setUserProfile",
+  SET_USERS_LIST = "setUsersList"
 }
 
 export interface AuthState {
   userProfile: User | null;
+  usersList: Array<User | null>;
 }
 
 export const createInitialState = (): AuthState => ({
-  userProfile: null
+  userProfile: null,
+  usersList: []
 });
 
 const state = createInitialState();
@@ -28,11 +31,20 @@ const state = createInitialState();
 const getters = {
   isLogged: (state: AuthState) => {
     return Boolean(state.userProfile);
+  },
+  userProfile: (state: AuthState) => {
+    return state.userProfile;
+  },
+  usersList: (state: AuthState) => {
+    return state.usersList;
   }
 };
 const mutations = {
   [AuthMutations.SET_USER_PROFILE](state: AuthState, user: any) {
     state.userProfile = user;
+  },
+  [AuthMutations.SET_USERS_LIST](state: AuthState, users: Array<User | null>) {
+    state.usersList = users;
   }
 };
 
@@ -85,10 +97,9 @@ const actions = {
         form.email,
         form.password
       );
-      await fb.usersCollection
+      return await fb.usersCollection
         .doc(user.uid)
         .set({ email: form.email, name: form.name, role: UserRole.USER });
-      return router.push({ name: "Login" });
     } catch (e) {
       return Promise.reject(e);
     }
@@ -97,6 +108,7 @@ const actions = {
     try {
       await fb.auth.signOut();
       commit(AuthMutations.SET_USER_PROFILE, null);
+      commit(AuthMutations.SET_USERS_LIST, []);
       return Promise.resolve();
     } catch (e) {
       return Promise.reject(e);
@@ -107,6 +119,16 @@ const actions = {
     email: string
   ) => {
     return await fb.auth.sendPasswordResetEmail(email);
+  },
+  [AuthActions.FETCH_USERS_LIST]: async ({ commit }: { commit: Commit }) => {
+    try {
+      const collection = await fb.usersCollection.get();
+      const users = collection.docs.map((doc: any) => doc.data());
+      commit(AuthMutations.SET_USERS_LIST, users);
+      return Promise.resolve();
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 };
 export default {
