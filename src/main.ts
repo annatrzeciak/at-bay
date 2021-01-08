@@ -3,12 +3,12 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import Vuesax from "vuesax";
-import Vuelidate from 'vuelidate'
+import Vuelidate from "vuelidate";
 import { auth } from "./firebase";
 
 import "vuesax/dist/vuesax.css";
 import "boxicons/css/boxicons.min.css";
-Vue.use(Vuesax);
+Vue.use(Vuesax, { colors: { dark: "#2e354a" } });
 Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;

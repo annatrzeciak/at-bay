@@ -95,9 +95,9 @@ const actions = {
   },
   [AuthActions.LOGOUT]: async ({ commit }: { commit: Commit }) => {
     try {
-      await fb.auth.signOut;
-
-      return commit(AuthMutations.SET_USER_PROFILE, null);
+      await fb.auth.signOut();
+      commit(AuthMutations.SET_USER_PROFILE, null);
+      return Promise.resolve();
     } catch (e) {
       return Promise.reject(e);
     }

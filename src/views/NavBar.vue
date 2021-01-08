@@ -1,5 +1,5 @@
 <template>
-  <vs-navbar color="primary" fixed text-white square center-collapsed>
+  <vs-navbar color="dark" fixed text-white square center-collapsed>
     <template #left>
       <span class="navbar--brand">
         atBay
@@ -37,7 +37,7 @@
       <vs-navbar-group v-if="isLogged">
         {{ userProfile.email }} <i class="bx bxs-down-arrow"></i>
         <template #items>
-          <vs-navbar-item :active="active == 'Account'">
+          <vs-navbar-item :active="active === 'Account'">
             <router-link exact-active-class="active" tag="span" to="/konto">
               Ustawienia
             </router-link>
