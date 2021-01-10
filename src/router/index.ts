@@ -1,7 +1,8 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "@/views/Home.vue";
-import Products from "@/views/Products.vue";
+import Products from "@/views/Products/Products.vue";
+import AddProduct from "@/views/Products/AddProduct.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Settings from "@/views/Account/Settings.vue";
@@ -19,7 +20,8 @@ const routes: Array<RouteConfig> = [
   {
     path: "/produkty",
     name: "Products",
-    component: Products
+    component: Products,
+    children: [{ path: "dodaj", name: "AddProduct", component: AddProduct }]
   },
   {
     path: "/logowanie",

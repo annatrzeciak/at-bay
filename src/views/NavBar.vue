@@ -14,7 +14,7 @@
         Główna
       </router-link>
     </vs-navbar-item>
-    <vs-navbar-item :active="active === 'Products'">
+    <vs-navbar-item :active="$route.path.includes('produkty')">
       <router-link
         exact-active-class="active"
         tag="span"
