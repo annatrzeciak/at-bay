@@ -29,8 +29,15 @@ export default class ProductCard extends Vue {
 }
 </script>
 <style lang="scss">
-.vs-card img {
-  min-height: 200px;
-  object-fit: cover;
+.vs-card {
+  height: 100%;
+  &__img {
+    height: 100%;
+    img {
+      height: 100%;
+      min-height: 200px;
+      object-fit: cover;
+    }
+  }
 }
 </style>

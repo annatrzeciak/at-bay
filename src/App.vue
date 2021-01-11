@@ -33,7 +33,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding-top: 60px;
-  h1 {
+  h1, h2 {
     text-align: center;
   }
   .content {

@@ -60,6 +60,7 @@ export default class Loading extends Vue {
   align-items: center;
   font-weight: bold;
   transition: opacity 0.3s, z-index 0s 0.3s;
+  color: white;
 }
 .loading--visible {
   opacity: 0.95;
