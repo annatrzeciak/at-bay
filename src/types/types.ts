@@ -5,6 +5,7 @@ export interface Product {
   grams: number;
   description?: string;
   image?: string;
+  added: string;
 }
 
 export interface User {

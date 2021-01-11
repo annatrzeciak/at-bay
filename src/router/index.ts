@@ -1,7 +1,8 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "@/views/Home.vue";
-import Products from "@/views/Products.vue";
+import Products from "@/views/Products/Products.vue";
+import AddProduct from "@/views/Products/AddProduct.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Settings from "@/views/Account/Settings.vue";
@@ -19,7 +20,18 @@ const routes: Array<RouteConfig> = [
   {
     path: "/produkty",
     name: "Products",
-    component: Products
+    component: Products,
+    children: [
+      {
+        path: "dodaj",
+        name: "AddProduct",
+        component: AddProduct,
+        meta: {
+          requiresAuth: true,
+          requiresModerator: true
+        }
+      }
+    ]
   },
   {
     path: "/logowanie",
@@ -66,16 +78,15 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
   const requiresNoAuth = to.matched.some(x => x.meta.requiresNoAuth);
   const requiresModerator = to.matched.some(x => x.meta.requiresModerator);
-  const role = store.getters["auth/userProfile"]
-    ? store.getters["auth/userProfile"].role
-    : null;
+  const isLogged = store.getters["auth/isLogged"];
+  const isModerator = store.getters["auth/isModerator"];
 
-  if (requiresAuth && !store.getters["auth/isLogged"]) {
-    next("/logowanie");
-  } else if (requiresNoAuth && store.getters["auth/isLogged"]) {
-    next("/");
-  } else if (requiresModerator && !(role === "moderator" || role === "admin")) {
-    next("/");
+  if (requiresAuth && !isLogged) {
+    next({ name: "Login" });
+  } else if (requiresNoAuth && isLogged) {
+    next({ name: "Home" });
+  } else if (requiresModerator && !isModerator) {
+    next({ name: "Home" });
   } else {
     next();
   }

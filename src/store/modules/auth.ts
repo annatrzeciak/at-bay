@@ -37,6 +37,13 @@ const getters = {
   },
   usersList: (state: AuthState) => {
     return state.usersList;
+  },
+  isModerator: (state: AuthState) => {
+    return (
+      state.userProfile &&
+      (state.userProfile.role === "moderator" ||
+        state.userProfile.role === "admin")
+    );
   }
 };
 const mutations = {

@@ -20,20 +20,9 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { namespace } from "vuex-class";
-import { Product } from "@/types/types";
-const productsModule = namespace("product");
 
 @Component({})
-export default class Home extends Vue {
-  @productsModule.Getter("lastAddedProducts") lastAddedProducts!: Array<
-    Product
-  > | null;
-  @productsModule.Action("fetchLastAddedProducts") fetchLastAddedProducts!: any;
-  async created() {
-    await this.fetchLastAddedProducts();
-  }
-}
+export default class Home extends Vue {}
 </script>
 <style lang="scss" scoped>
 header {
