@@ -40,12 +40,12 @@ export default class ProductsList extends Vue {
       this.startLoading();
       await this.fetchProducts();
     } catch (e) {
-        this.$vs.notification({
-            duration: 10000,
-            color: "danger",
-            title: "Wystąpił błąd podczas ładowania produktu",
-            text: translateErrorMessage(e)
-        });
+      this.$vs.notification({
+        duration: 10000,
+        color: "danger",
+        title: "Wystąpił błąd podczas ładowania produktu",
+        text: translateErrorMessage(e)
+      });
     } finally {
       this.stopLoading();
     }

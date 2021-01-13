@@ -10,6 +10,12 @@ import "vuesax/dist/vuesax.css";
 import "boxicons/css/boxicons.min.css";
 Vue.use(Vuesax, { colors: { dark: "#2e354a" } });
 Vue.use(Vuelidate);
+Vue.directive("two-decimal-places", {
+  bind: el => {
+    const number = Number(el.innerText);
+    el.innerText = String((Math.round(number * 100) / 100).toFixed(2));
+  }
+});
 
 Vue.config.productionTip = false;
 auth.onAuthStateChanged(user => {

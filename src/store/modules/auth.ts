@@ -44,6 +44,9 @@ const getters = {
       (state.userProfile.role === "moderator" ||
         state.userProfile.role === "admin")
     );
+  },
+  isUser: (state: AuthState) => {
+    return state.userProfile && state.userProfile.role === "user";
   }
 };
 const mutations = {

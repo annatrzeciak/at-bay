@@ -42,14 +42,21 @@
       >
         Rejestracja
       </vs-button>
+      <div class="cart" v-if="isLogged">
+        <vs-avatar size="30" badge-color="primary" badge-position="top-right">
+          <i class="bx bxs-cart" />
+          <template #badge>
+            3
+          </template>
+        </vs-avatar>
+        <cart class="cart__details" />
+      </div>
       <vs-navbar-group v-if="isLogged">
         {{ userProfile.email }} <i class="bx bxs-down-arrow"></i>
         <template #items>
           <vs-navbar-item :active="active === 'Users'">
             <router-link
-              v-if="
-                userProfile.role === 'admin' || userProfile.role === 'moderator'
-              "
+              v-if="isModerator"
               exact-active-class="active"
               tag="span"
               :to="{ name: 'Users' }"
@@ -81,13 +88,16 @@ import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import translateErrorMessage from "@/utils/errorTranslations";
 import { User } from "@/types/types";
+import Cart from "@/components/Cart.vue";
 const authModule = namespace("auth");
 const appModule = namespace("app");
 
-@Component
+@Component({ components: { Cart } })
 export default class NavBar extends Vue {
   @authModule.Getter("isLogged") isLogged!: boolean;
   @authModule.Getter("userProfile") userProfile!: User | null;
+  @authModule.Getter("isModerator") isModerator!: boolean;
+  @authModule.Getter("isUser") isUser!: boolean;
   @authModule.Action("logout") logout: any;
   @appModule.Action("startLoading") startLoading: any;
   @appModule.Action("stopLoading") stopLoading: any;
@@ -129,5 +139,21 @@ export default class NavBar extends Vue {
 }
 .vs-navbar__group i {
   vertical-align: middle;
+}
+
+.cart {
+  position: relative;
+  &__details {
+    display: none;
+    position: absolute;
+    left: calc(-165px + 50%);
+    top: calc(100% - 10px);
+    width: 300px;
+    padding: 15px;
+
+  }
+  &:hover .cart__details {
+    display: block;
+  }
 }
 </style>
