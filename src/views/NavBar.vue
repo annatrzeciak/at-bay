@@ -43,10 +43,15 @@
         Rejestracja
       </vs-button>
       <div class="cart" v-if="isLogged">
-        <vs-avatar size="30" badge-color="primary" badge-position="top-right">
+        <vs-avatar
+          :badge="Boolean(productsInCart)"
+          size="30"
+          badge-color="primary"
+          badge-position="top-right"
+        >
           <i class="bx bxs-cart" />
-          <template #badge>
-            3
+          <template #badge v-if="productsInCart">
+            {{ productsInCart }}
           </template>
         </vs-avatar>
         <cart class="cart__details" />
@@ -91,6 +96,7 @@ import { User } from "@/types/types";
 import Cart from "@/components/Cart.vue";
 const authModule = namespace("auth");
 const appModule = namespace("app");
+const orderModule = namespace("order");
 
 @Component({ components: { Cart } })
 export default class NavBar extends Vue {
@@ -101,6 +107,7 @@ export default class NavBar extends Vue {
   @authModule.Action("logout") logout: any;
   @appModule.Action("startLoading") startLoading: any;
   @appModule.Action("stopLoading") stopLoading: any;
+  @orderModule.Getter("productsInCart") productsInCart!: number;
 
   redirectTo(name: string) {
     if (this.$route.name !== name) this.$router.push({ name: name });
@@ -150,10 +157,20 @@ export default class NavBar extends Vue {
     top: calc(100% - 10px);
     width: 300px;
     padding: 15px;
-
   }
   &:hover .cart__details {
     display: block;
+  }
+}
+</style>
+<style lang="scss">
+.cart {
+  .vs-card {
+    border: 1px rgb(46, 53, 74) solid;
+    top: 5px;
+    &:hover {
+      transform: translate(0);
+    }
   }
 }
 </style>

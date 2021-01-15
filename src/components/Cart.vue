@@ -40,39 +40,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Product } from "@/types/types";
+import { namespace } from "vuex-class";
+const orderModule = namespace("order");
 
 @Component({ components: {} })
 export default class Cart extends Vue {
-  cart: Array<{ count: number; product: Product }> = [
-    {
-      count: 1,
-      product: {
-        uuid: "",
-        description:
-          "Skład: \nwoda\t\nŚMIETANA kremówka\t\ncukier\t\nczekolada w płatkach - 9% (cukier. miazga kakaowa. tłuszcz kakaowy. lecytyna sojowa (E 322))\t\naromat\t\nodtłuszczone mleko w proszku\t\nziemniaczany syrop glukozowy\t\nkakao o obniżonej zawartości tłuszczu\t\njaja\t\nmasło z mleka\t\ntłuszcz kokosowy\t\nemulgator Mono- i diglicerydy kwasów tłuszczowych E-471\t\nstabilizatory (mączka chleba świętojańskiego (E 410). guma guar (E412))",
-        grams: 300,
-        image:
-          "https://cdn9.beszamel.smcloud.net/t/thumbs/660/441/1/recipes/photo/jak_zrobic_lody_czekoladowe_podajemy.jpg",
-        name: "Lody czekoladowe",
-        price: 3.8,
-        added: new Date().toDateString()
-      }
-    },
-    {
-      count: 2,
-      product: {
-        uuid: "Txo37m4QdyUVK1R6luTT",
-        name: "Lody pistacjowe ",
-        image:
-          "https://1.bp.blogspot.com/-crBaydjCJWQ/VVYLW5wI04I/AAAAAAAACm8/FPFyJillIA8/s1600/IMG_7593.JPG",
-        grams: 300,
-        price: 3.9,
-        description:
-          "Skład: \nśmietanę kremówkę, wodę, cukier, ziemniaczany syrop glukozowy, odtłuszczone mleko w proszku, orzechy włoskie - 4%, masło z mleka, tłuszcz kokosowy, jaja, oraz emulgatory i stabilizatory. Barwę produktowi nadaje karmel, natomiast zapach aromat. Szkoda, że dodatek orzechów włoskich jest tak niski.",
-        added: new Date().toDateString()
-      }
-    }
-  ];
+  @orderModule.Getter("cart") cart!: Array<{ count: number; product: Product }>;
+
   get total() {
     let total = 0;
     this.cart.forEach(item => {
