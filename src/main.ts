@@ -18,7 +18,7 @@ Vue.directive("two-decimal-places", {
 });
 
 Vue.config.productionTip = false;
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged((user: any) => {
   new Vue({
     router,
     store,

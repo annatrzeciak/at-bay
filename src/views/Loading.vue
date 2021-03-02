@@ -28,7 +28,7 @@
         </g>
       </svg>
     </div>
-    <div class="loading__text">Loading...</div>
+    <div class="loading__text">Ładowanie...</div>
   </div>
 </template>
 

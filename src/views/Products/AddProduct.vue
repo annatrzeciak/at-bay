@@ -26,7 +26,7 @@ export default class AddProduct extends Vue {
     try {
       this.startLoading();
       await this.saveProduct(product);
-      this.$refs["productForm"].reset();
+      (this.$refs["productForm"] as any).reset();
       this.$vs.notification({
         duration: 10000,
         flat: true,
