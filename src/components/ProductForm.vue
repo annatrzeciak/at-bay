@@ -129,7 +129,7 @@ export default class ProductForm extends Vue {
       this.$emit("submit", this.productObject);
     } else {
       this.$vs.notification({
-        duration: 10000,
+        duration: 5000,
         flat: true,
         color: "danger",
         title: "Wprowadzono nieprawidłowe dane",

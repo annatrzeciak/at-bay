@@ -120,14 +120,14 @@ export default class NavBar extends Vue {
     try {
       await this.logout();
       this.$vs.notification({
-        duration: 10000,
+        duration: 5000,
         flat: true,
         color: "success",
         title: "Wylogowywanie zakończone pomyślnie"
       });
     } catch (e) {
       this.$vs.notification({
-        duration: 10000,
+        duration: 5000,
         color: "danger",
         title: "Wystąpił błąd podczas wylogowania",
         text: translateErrorMessage(e)

@@ -171,7 +171,7 @@ export default class Register extends Vue {
           password: this.password
         });
         this.$vs.notification({
-          duration: 10000,
+          duration: 5000,
           flat: true,
           color: "success",
           title: "Rejestracja nowego użytkownika zakończona pomyślnie",
@@ -180,7 +180,7 @@ export default class Register extends Vue {
       } catch (e) {
         this.errorMessage = translateErrorMessage(e);
         this.$vs.notification({
-          duration: 10000,
+          duration: 5000,
           color: "danger",
           title: "Wystąpił błąd podczas rejestracji",
           text: "Popraw dane lub spróbuj później"
@@ -190,7 +190,7 @@ export default class Register extends Vue {
       }
     } else {
       this.$vs.notification({
-        duration: 10000,
+        duration: 5000,
         flat: true,
         color: "danger",
         title: "Wprowadzono nieprawidłowe dane",
