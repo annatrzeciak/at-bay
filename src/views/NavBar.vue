@@ -44,14 +44,14 @@
       </vs-button>
       <div class="cart" v-if="isLogged">
         <vs-avatar
-          :badge="Boolean(productsInCart)"
+          :badge="Boolean(countProductsInCart)"
           size="30"
           badge-color="primary"
           badge-position="top-right"
         >
           <i class="bx bxs-cart" />
-          <template #badge v-if="productsInCart">
-            {{ productsInCart }}
+          <template #badge v-if="countProductsInCart">
+            {{ countProductsInCart }}
           </template>
         </vs-avatar>
         <cart class="cart__details" />
@@ -107,7 +107,7 @@ export default class NavBar extends Vue {
   @authModule.Action("logout") logout: any;
   @appModule.Action("startLoading") startLoading: any;
   @appModule.Action("stopLoading") stopLoading: any;
-  @orderModule.Getter("productsInCart") productsInCart!: number;
+  @orderModule.Getter("countProductsInCart") countProductsInCart!: number;
 
   redirectTo(name: string) {
     if (this.$route.name !== name) this.$router.push({ name: name });
