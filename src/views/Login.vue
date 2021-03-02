@@ -134,7 +134,7 @@ export default class Login extends Vue {
           password: this.password
         });
         this.$vs.notification({
-          duration: 10000,
+          duration: 5000,
           flat: true,
           color: "success",
           title: "Logowanie zakończone pomyślnie",
@@ -143,7 +143,7 @@ export default class Login extends Vue {
       } catch (e) {
         this.errorMessage = translateErrorMessage(e);
         this.$vs.notification({
-          duration: 10000,
+          duration: 5000,
           flat: true,
           color: "danger",
           title: "Wystąpił błąd podczas logowania",
@@ -154,7 +154,7 @@ export default class Login extends Vue {
       }
     } else {
       this.$vs.notification({
-        duration: 10000,
+        duration: 5000,
         flat: true,
         color: "danger",
         title: "Wprowadzono nieprawidłowe dane",
@@ -167,7 +167,7 @@ export default class Login extends Vue {
       this.startLoading();
       await this.resetPassword(this.emailToReset);
       this.$vs.notification({
-        duration: 10000,
+        duration: 5000,
         flat: true,
         color: "success",
         title: "Zlecenie restartu hasła zakończone pomyślnie",
@@ -175,7 +175,7 @@ export default class Login extends Vue {
       });
     } catch (e) {
       this.$vs.notification({
-        duration: 10000,
+        duration: 5000,
         flat: true,
         color: "danger",
         title: "Wystąpił błąd podczas restartu hasła",

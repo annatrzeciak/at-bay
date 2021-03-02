@@ -30,8 +30,8 @@ const appModule = namespace("app");
 @Component({ components: { ProductCard } })
 export default class ProductsList extends Vue {
   @productsModule.Getter("products") products!: Array<Product> | null;
+  @authModule.Getter("isModerator") isModerator!: boolean;
   @productsModule.Action("fetchProducts") fetchProducts!: any;
-  @authModule.Action("isModerator") isModerator!: boolean;
   @appModule.Action("startLoading") startLoading: any;
   @appModule.Action("stopLoading") stopLoading: any;
 
@@ -40,12 +40,12 @@ export default class ProductsList extends Vue {
       this.startLoading();
       await this.fetchProducts();
     } catch (e) {
-        this.$vs.notification({
-            duration: 10000,
-            color: "danger",
-            title: "Wystąpił błąd podczas ładowania produktu",
-            text: translateErrorMessage(e)
-        });
+      this.$vs.notification({
+        duration: 5000,
+        color: "danger",
+        title: "Wystąpił błąd podczas ładowania produktu",
+        text: translateErrorMessage(e)
+      });
     } finally {
       this.stopLoading();
     }

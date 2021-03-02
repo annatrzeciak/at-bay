@@ -47,6 +47,7 @@ header {
   & > div {
     width: 100%;
     min-height: calc(100vh - 100px);
+    box-sizing: border-box;
     @media (max-width: 900px) {
       .vs-col--sm-12.vs-col--offset-7 {
         margin-left: 0%;

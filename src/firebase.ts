@@ -1,4 +1,4 @@
-import { firebase } from '@firebase/app';
+import { firebase } from "@firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
@@ -14,8 +14,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // utils
-const db = firebase.firestore();
-const auth = firebase.auth();
+const db = (firebase as any).firestore();
+const auth = (firebase as any).auth();
 
 // collection references
 const usersCollection = db.collection("users");

@@ -26,9 +26,9 @@ export default class AddProduct extends Vue {
     try {
       this.startLoading();
       await this.saveProduct(product);
-      this.$refs["productForm"].reset();
+      (this.$refs["productForm"] as any).reset();
       this.$vs.notification({
-        duration: 10000,
+        duration: 5000,
         flat: true,
         color: "success",
         title: "Rejestracja nowego użytkownika zakończona pomyślnie",
@@ -36,7 +36,7 @@ export default class AddProduct extends Vue {
       });
     } catch (e) {
       this.$vs.notification({
-        duration: 10000,
+        duration: 5000,
         color: "danger",
         title: "Wystąpił błąd podczas zapisywania produktu",
         text: translateErrorMessage(e)
