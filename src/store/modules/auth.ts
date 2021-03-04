@@ -38,16 +38,13 @@ const getters = {
   usersList: (state: AuthState) => {
     return state.usersList;
   },
-  isModerator: (state: AuthState) => {
-    return (
-      state.userProfile &&
-      (state.userProfile.role === "moderator" ||
-        state.userProfile.role === "admin")
-    );
-  },
-  isUser: (state: AuthState) => {
-    return state.userProfile && state.userProfile.role === "user";
-  }
+  isModerator: (state: AuthState) =>
+    state.userProfile &&
+    (state.userProfile.role === UserRole.ADMIN ||
+      state.userProfile.role === UserRole.MODERATOR),
+
+  isUser: (state: AuthState) =>
+    state.userProfile && state.userProfile.role === UserRole.USER
 };
 const mutations = {
   [AuthMutations.SET_USER_PROFILE](state: AuthState, user: any) {
