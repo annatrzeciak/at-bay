@@ -26,6 +26,14 @@ const getters = {
     let total = 0;
     state.cart.forEach(item => (total += item.count));
     return total;
+  },
+  totalCostInCart: (state: OrderState) => {
+    let total = 0;
+    state.cart.forEach(item => {
+      total += item.count * item.product.price;
+    });
+
+    return total;
   }
 };
 const mutations = {

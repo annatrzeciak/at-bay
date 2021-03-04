@@ -8,7 +8,8 @@
           </vs-col>
           <vs-col w="7">
             <div class="cart__total">
-              razem: <strong v-two-decimal-places>{{ total }}</strong> zł
+              razem:
+              <strong>{{ getConvertedNumber(totalCostInCart) }}</strong> zł
             </div>
           </vs-col>
         </vs-row>
@@ -21,8 +22,8 @@
               <td>x</td>
               <td class="cart-item__name">{{ item.product.name }}</td>
               <td class="cart-item__value">
-                <span v-two-decimal-places>{{
-                  item.count * item.product.price
+                <span>{{
+                  getConvertedNumber(item.count * item.product.price)
                 }}</span>
                 zł
               </td>
@@ -41,18 +42,17 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Product } from "@/types/types";
 import { namespace } from "vuex-class";
+import convertToTwoDecimalPlaces from "@/utils/convertNumberToTwoDecimalPlaces";
+
 const orderModule = namespace("order");
 
 @Component({ components: {} })
 export default class Cart extends Vue {
   @orderModule.Getter("cart") cart!: Array<{ count: number; product: Product }>;
+  @orderModule.Getter("totalCostInCart") totalCostInCart!: number;
 
-  get total() {
-    let total = 0;
-    this.cart.forEach(item => {
-      total += item.count * item.product.price;
-    });
-    return total;
+  getConvertedNumber(number: number) {
+    return convertToTwoDecimalPlaces(number);
   }
 }
 </script>
