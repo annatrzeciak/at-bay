@@ -15,7 +15,7 @@
         </vs-row>
       </template>
       <template #text>
-        <table class="cart__products">
+        <table class="cart__products" v-if="cart.length">
           <tbody>
             <tr v-for="(item, i) in cart" :key="i">
               <td class="cart-item__count">{{ item.count }}</td>
@@ -27,9 +27,16 @@
                 }}</span>
                 zł
               </td>
+              <td
+                class="cart-item__remove"
+                @click="removeProductFromCart(item)"
+              >
+                <i class="bx bxs-trash" />
+              </td>
             </tr>
           </tbody>
         </table>
+        <div class="cart__products--empty">Twój koszyk jest pusty</div>
 
         <vs-button flat>
           pokaż koszyk
@@ -50,9 +57,22 @@ const orderModule = namespace("order");
 export default class Cart extends Vue {
   @orderModule.Getter("cart") cart!: Array<{ count: number; product: Product }>;
   @orderModule.Getter("totalCostInCart") totalCostInCart!: number;
+  @orderModule.Action("removeFromCart") removeFromCart!: any;
 
-  getConvertedNumber(number: number) {
+  getConvertedNumber(number: number): string {
     return convertToTwoDecimalPlaces(number);
+  }
+  removeProductFromCart(cartItem: { count: number; product: Product }) {
+    try {
+      this.removeFromCart(cartItem);
+    } catch (e) {
+      this.$vs.notification({
+        duration: 5000,
+        color: "danger",
+        title: "Wystąpił błąd podczas usuwania produktu z koszyka",
+        text: "Szczegóły: " + e
+      });
+    }
   }
 }
 </script>
@@ -69,6 +89,9 @@ export default class Cart extends Vue {
   }
   &__products {
     width: 100%;
+    &--empty {
+      text-align: center;
+    }
     .cart-item {
       td {
         flex: 1;
@@ -82,6 +105,13 @@ export default class Cart extends Vue {
         width: 25%;
         font-weight: bold;
         text-align: right;
+      }
+      &__remove {
+        position: relative;
+        top: 2px;
+        i:hover {
+          color: rgb(255, 71, 87);
+        }
       }
     }
   }
