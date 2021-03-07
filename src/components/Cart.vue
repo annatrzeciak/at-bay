@@ -36,9 +36,15 @@
             </tr>
           </tbody>
         </table>
-        <div class="cart__products--empty">Twój koszyk jest pusty</div>
+        <div class="cart__products--empty" v-else>
+          Twój koszyk jest pusty
+        </div>
 
-        <vs-button flat>
+        <vs-button
+          v-if="$route.name !== 'FullCart'"
+          flat
+          @click="$router.push({ name: 'FullCart' })"
+        >
           pokaż koszyk
         </vs-button>
       </template>
@@ -62,7 +68,7 @@ export default class Cart extends Vue {
   getConvertedNumber(number: number): string {
     return convertToTwoDecimalPlaces(number);
   }
-  removeProductFromCart(cartItem: { count: number; product: Product }) {
+  removeProductFromCart(cartItem: { count: number; product: Product }): void {
     try {
       this.removeFromCart(cartItem);
     } catch (e) {

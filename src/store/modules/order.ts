@@ -4,13 +4,15 @@ import { Product } from "@/types/types";
 export enum OrderActions {
   ADD_TO_CART = "addToCart",
   REMOVE_FROM_CART = "removeFromCart",
-  SEND_CART = "sendCart"
+  SEND_CART = "sendCart",
+  UPDATE_PRODUCT_IN_CART = "updateProductInCart"
 }
 
 export enum OrderMutations {
   ADD_TO_CART = "addToCart",
   REMOVE_FROM_CART = "removeFromCart",
-  CLEAR_CART = "clearCart"
+  CLEAR_CART = "clearCart",
+  UPDATE_PRODUCT_IN_CART = "updateProductInCart"
 }
 
 export interface OrderState {
@@ -64,6 +66,17 @@ const mutations = {
   },
   [OrderMutations.CLEAR_CART](state: OrderState) {
     state.cart = [];
+  },
+  [OrderMutations.UPDATE_PRODUCT_IN_CART](
+    state: OrderState,
+    cartItem: { count: number; product: Product }
+  ) {
+    const item = state.cart.find(
+      item => item.product.uuid === cartItem.product.uuid
+    );
+    if (item) {
+      item.count = cartItem.count;
+    }
   }
 };
 const actions = {
@@ -81,6 +94,16 @@ const actions = {
   },
   [OrderActions.SEND_CART]: async ({ commit }: { commit: Commit }) => {
     commit(OrderMutations.CLEAR_CART);
+  },
+  [OrderActions.UPDATE_PRODUCT_IN_CART]: async (
+    {
+      commit
+    }: {
+      commit: Commit;
+    },
+    cartItem: { count: number; product: Product }
+  ) => {
+    commit(OrderMutations.UPDATE_PRODUCT_IN_CART, cartItem);
   }
 };
 
