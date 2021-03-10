@@ -7,6 +7,7 @@ import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Settings from "@/views/Account/Settings.vue";
 import Users from "@/views/Account/Users.vue";
+import FullCart from "@/views/FullCart.vue";
 import store from "@/store";
 
 Vue.use(VueRouter);
@@ -62,6 +63,14 @@ const routes: Array<RouteConfig> = [
     path: "/ustawienia",
     name: "Settings",
     component: Settings,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/koszyk",
+    name: "FullCart",
+    component: FullCart,
     meta: {
       requiresAuth: true
     }

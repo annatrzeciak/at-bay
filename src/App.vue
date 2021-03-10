@@ -45,5 +45,19 @@ body {
     padding-right: 15px;
     padding-left: 15px;
   }
+  .text {
+    &-right {
+      text-align: right;
+    }
+    &-center {
+      text-align: center;
+    }
+    &-left {
+      text-align: left;
+    }
+  }
+  .vs-table tr td {
+    font-size: 16px;
+  }
 }
 </style>

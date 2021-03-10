@@ -12,6 +12,7 @@ export interface User {
   name: string;
   email: number;
   role: UserRole;
+  uuid: string;
 }
 
 export enum UserRole {
