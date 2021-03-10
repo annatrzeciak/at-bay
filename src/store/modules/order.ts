@@ -1,6 +1,6 @@
 import { ActionContext } from "vuex";
 import { GetterFunc, ModuleNames, RootState } from "@/store/modules/types";
-import { Product } from "@/types/types";
+import { CartItem, Order, OrderStatus } from "@/types/types";
 import * as fb from "@/firebase";
 import { ActionFunc } from "@/store/modules/types";
 
@@ -20,10 +20,10 @@ export enum OrderMutations {
 }
 
 export interface OrderState {
-  cart: Array<{ count: number; product: Product }>;
+  cart: Array<CartItem>;
 }
 export interface OrderGetters {
-  cart: Array<{ count: number; product: Product }>;
+  cart: Array<CartItem>;
   countProductsInCart: number;
   totalCostInCart: number;
 }
@@ -52,10 +52,7 @@ const getters: GetterFunc<OrderGetters, OrderState> = {
   }
 };
 const mutations = {
-  [OrderMutations.ADD_TO_CART](
-    state: OrderState,
-    cartItem: { count: number; product: Product }
-  ) {
+  [OrderMutations.ADD_TO_CART](state: OrderState, cartItem: CartItem) {
     const productInCart = state.cart.find(
       item => item.product.uuid === cartItem.product.uuid
     );
@@ -65,10 +62,7 @@ const mutations = {
       state.cart.push(cartItem);
     }
   },
-  [OrderMutations.REMOVE_FROM_CART](
-    state: OrderState,
-    cartItem: { count: number; product: Product }
-  ) {
+  [OrderMutations.REMOVE_FROM_CART](state: OrderState, cartItem: CartItem) {
     const index = state.cart
       .map(item => item.product.uuid)
       .indexOf(cartItem.product.uuid);
@@ -82,7 +76,7 @@ const mutations = {
   },
   [OrderMutations.UPDATE_PRODUCT_IN_CART](
     state: OrderState,
-    cartItem: { count: number; product: Product }
+    cartItem: CartItem
   ) {
     const item = state.cart.find(
       item => item.product.uuid === cartItem.product.uuid
@@ -95,19 +89,19 @@ const mutations = {
 const actions: ActionFunc<OrderActions, OrderActionContext> = {
   [OrderActions.ADD_TO_CART]: async (
     { commit }: OrderActionContext,
-    cartItem: { count: number; product: Product }
+    cartItem: CartItem
   ) => {
     commit(OrderMutations.ADD_TO_CART, cartItem);
   },
   [OrderActions.REMOVE_FROM_CART]: async (
     { commit }: OrderActionContext,
-    cartItem: { count: number; product: Product }
+    cartItem: CartItem
   ) => {
     commit(OrderMutations.REMOVE_FROM_CART, cartItem);
   },
   [OrderActions.SEND_CART]: async (
     { commit, rootState }: OrderActionContext,
-    order: { cart: Array<{ count: number; product: Product }>; remarks: string }
+    order: Order
   ) => {
     try {
       const user = fb.db.doc(
@@ -123,7 +117,7 @@ const actions: ActionFunc<OrderActions, OrderActionContext> = {
         user,
         remarks: order.remarks,
         cart,
-        status: "new"
+        status: OrderStatus.NEW
       });
       return commit(OrderMutations.CLEAR_CART);
     } catch (e) {
@@ -132,7 +126,7 @@ const actions: ActionFunc<OrderActions, OrderActionContext> = {
   },
   [OrderActions.UPDATE_PRODUCT_IN_CART]: async (
     { commit }: OrderActionContext,
-    cartItem: { count: number; product: Product }
+    cartItem: CartItem
   ) => {
     commit(OrderMutations.UPDATE_PRODUCT_IN_CART, cartItem);
   },

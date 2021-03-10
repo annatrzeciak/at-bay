@@ -23,17 +23,16 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Product } from "@/types/types";
+import { CartItem, Product } from "@/types/types";
 import { namespace } from "vuex-class";
 
 const orderModule = namespace("order");
 
 @Component({ components: {} })
 export default class ProductCard extends Vue {
-  @orderModule.Action("addToCart") addToCart!: (cartItem: {
-    count: number;
-    product: Product;
-  }) => Promise<void>;
+  @orderModule.Action("addToCart") addToCart!: (
+    cartItem: CartItem
+  ) => Promise<void>;
 
   @Prop() product!: Product;
 
