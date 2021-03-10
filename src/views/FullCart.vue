@@ -65,7 +65,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Product } from "@/types/types";
+import { CartItem } from "@/types/types";
 import { namespace } from "vuex-class";
 import TextArea from "@/components/Vs/TextArea.vue";
 import convertToTwoDecimalPlaces from "@/utils/convertNumberToTwoDecimalPlaces";
@@ -74,7 +74,7 @@ const orderModule = namespace("order");
 
 @Component({ components: { TextArea } })
 export default class FullCart extends Vue {
-  @orderModule.Getter("cart") cart!: Array<{ count: number; product: Product }>;
+  @orderModule.Getter("cart") cart!: Array<CartItem>;
   @orderModule.Getter("totalCostInCart") totalCostInCart!: number;
   @orderModule.Action("removeFromCart") removeFromCart!: any;
   @orderModule.Action("removeAllFromCart") removeAllFromCart!: any;
@@ -85,7 +85,7 @@ export default class FullCart extends Vue {
   getConvertedNumber(number: number): string {
     return convertToTwoDecimalPlaces(number);
   }
-  removeProductFromCart(cartItem: { count: number; product: Product }): void {
+  removeProductFromCart(cartItem: CartItem): void {
     try {
       this.removeFromCart(cartItem);
     } catch (e) {
@@ -97,7 +97,7 @@ export default class FullCart extends Vue {
       });
     }
   }
-  changedCount(item: { count: number; product: Product }, event: any) {
+  changedCount(item: CartItem, event: any) {
     const changedItem = { ...item };
     if (event.target?.value) {
       changedItem.count = Number(event.target?.value);

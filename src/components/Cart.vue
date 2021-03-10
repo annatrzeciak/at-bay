@@ -53,7 +53,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Product } from "@/types/types";
+import { CartItem } from "@/types/types";
 import { namespace } from "vuex-class";
 import convertToTwoDecimalPlaces from "@/utils/convertNumberToTwoDecimalPlaces";
 
@@ -61,14 +61,14 @@ const orderModule = namespace("order");
 
 @Component({ components: {} })
 export default class Cart extends Vue {
-  @orderModule.Getter("cart") cart!: Array<{ count: number; product: Product }>;
+  @orderModule.Getter("cart") cart!: Array<CartItem>;
   @orderModule.Getter("totalCostInCart") totalCostInCart!: number;
   @orderModule.Action("removeFromCart") removeFromCart!: any;
 
   getConvertedNumber(number: number): string {
     return convertToTwoDecimalPlaces(number);
   }
-  removeProductFromCart(cartItem: { count: number; product: Product }): void {
+  removeProductFromCart(cartItem: CartItem): void {
     try {
       this.removeFromCart(cartItem);
     } catch (e) {
