@@ -47,8 +47,11 @@ const getters = {
     state.userProfile && state.userProfile.role === UserRole.USER
 };
 const mutations = {
-  [AuthMutations.SET_USER_PROFILE](state: AuthState, user: any) {
-    state.userProfile = user;
+  [AuthMutations.SET_USER_PROFILE](
+    state: AuthState,
+    payload: { userProfile: any; userUuid: string }
+  ) {
+    state.userProfile = { ...payload.userProfile, uuid: payload.userUuid };
   },
   [AuthMutations.SET_USERS_LIST](state: AuthState, users: Array<User | null>) {
     state.usersList = users;
@@ -85,8 +88,10 @@ const actions = {
   ) => {
     try {
       const userProfile = await fb.usersCollection.doc(user.uid).get();
-
-      commit(AuthMutations.SET_USER_PROFILE, userProfile.data());
+      commit(AuthMutations.SET_USER_PROFILE, {
+        userProfile: userProfile.data(),
+        userUuid: user.uid
+      });
     } catch (e) {
       return Promise.reject(e);
     }

@@ -20,6 +20,7 @@ const auth = (firebase as any).auth();
 // collection references
 const usersCollection = db.collection("users");
 const productsCollection = db.collection("products");
+const ordersCollection = db.collection("orders");
 
 // export utils/refs
-export { db, auth, usersCollection, productsCollection };
+export { db, auth, usersCollection, productsCollection, ordersCollection };
