@@ -26,9 +26,7 @@ export default class Home extends Vue {}
 </script>
 <style lang="scss" scoped>
 header {
-  min-height: 100vh;
-  height: 100%;
-  width: calc(100vw + 15px);
+  min-height: calc(100vh - 44px);
   background-image: linear-gradient(
       rgba(0, 0, 0, 0.3) 0%,
       rgba(0, 0, 0, 0.3) 100%
@@ -36,17 +34,15 @@ header {
     url("../assets/header.jpg");
   background-size: cover;
   background-position: center;
-  margin-left: -23px;
-  margin-top: -68px;
-  margin-bottom: -68px;
-  padding: 68px 15px 15px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
   box-sizing: border-box;
   text-shadow: black 0px 0px 6px;
   color: white;
   font-size: 20px;
   & > div {
     width: 100%;
-    min-height: calc(100vh - 100px);
     box-sizing: border-box;
     @media (max-width: 900px) {
       .vs-col--sm-12.vs-col--offset-7 {

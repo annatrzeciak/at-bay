@@ -5,6 +5,9 @@ import store from "./store";
 import Vuesax from "vuesax";
 import Vuelidate from "vuelidate";
 import { auth } from "./firebase";
+import "bootstrap";
+import "@fortawesome/fontawesome-free/css/all.css";
+import "@fortawesome/fontawesome-free/js/all.js";
 
 import "vuesax/dist/vuesax.css";
 import "boxicons/css/boxicons.min.css";

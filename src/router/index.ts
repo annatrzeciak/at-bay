@@ -84,20 +84,28 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
-  const requiresNoAuth = to.matched.some(x => x.meta.requiresNoAuth);
-  const requiresModerator = to.matched.some(x => x.meta.requiresModerator);
-  const isLogged = store.getters["auth/isLogged"];
-  const isModerator = store.getters["auth/isModerator"];
+  store.dispatch("app/startLoading");
+  setTimeout(() => {
+    const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
+    const requiresNoAuth = to.matched.some(x => x.meta.requiresNoAuth);
+    const requiresModerator = to.matched.some(x => x.meta.requiresModerator);
+    const isLogged = store.getters["auth/isLogged"];
+    const isModerator = store.getters["auth/isModerator"];
 
-  if (requiresAuth && !isLogged) {
-    next({ name: "Login" });
-  } else if (requiresNoAuth && isLogged) {
-    next({ name: "Home" });
-  } else if (requiresModerator && !isModerator) {
-    next({ name: "Home" });
-  } else {
-    next();
-  }
+    if (requiresAuth && !isLogged) {
+      next({ name: "Login" });
+    } else if (requiresNoAuth && isLogged) {
+      next({ name: "Home" });
+    } else if (requiresModerator && !isModerator) {
+      next({ name: "Home" });
+    } else {
+      next();
+    }
+  }, 100);
+});
+router.afterEach(() => {
+  setTimeout(() => {
+    store.dispatch("app/stopLoading");
+  }, 300);
 });
 export default router;

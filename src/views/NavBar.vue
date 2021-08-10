@@ -1,104 +1,162 @@
 <template>
-  <vs-navbar color="dark" fixed text-white square center-collapsed>
-    <template #left>
-      <span class="navbar--brand">
-        atBay
-      </span>
-    </template>
-    <vs-navbar-item :active="active === 'Home'">
-      <router-link
-        exact-active-class="active"
-        tag="span"
-        :to="{ name: 'Home' }"
-      >
-        Główna
-      </router-link>
-    </vs-navbar-item>
-    <vs-navbar-item :active="$route.path.includes('produkty')">
-      <router-link
-        exact-active-class="active"
-        tag="span"
-        :to="{ name: 'Products' }"
-      >
-        Produkty
-      </router-link>
-    </vs-navbar-item>
-    <template #right>
-      <vs-button
-        v-if="!isLogged"
-        :border="$route.name === 'Login'"
-        color="#fff"
-        flat
-        @click="redirectTo('Login')"
-      >
-        Logowanie
-      </vs-button>
-      <vs-button
-        v-if="!isLogged"
-        :border="$route.name === 'Register'"
-        color="#fff"
-        flat
-        @click="redirectTo('Register')"
-      >
-        Rejestracja
-      </vs-button>
-      <div class="cart" v-if="isLogged">
-        <vs-avatar
-          :badge="Boolean(countProductsInCart)"
-          size="30"
-          badge-color="primary"
-          badge-position="top-right"
-        >
-          <i class="bx bxs-cart" />
-          <template #badge v-if="countProductsInCart">
-            {{ countProductsInCart }}
-          </template>
-        </vs-avatar>
-        <cart class="cart__details" />
-      </div>
-      <vs-navbar-group v-if="isLogged">
-        {{ userProfile.email }} <i class="bx bxs-down-arrow"></i>
-        <template #items>
-          <vs-navbar-item :active="active === 'Users'">
-            <router-link
-              v-if="isModerator"
-              exact-active-class="active"
-              tag="span"
-              :to="{ name: 'Users' }"
+  <div>
+    <div class="top-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-10 col-sm-8 col-md-5 col-lg-4">
+            <p class="phone-no">
+              <i class="anm anm-phone-s"></i> +48 123 456 789
+            </p>
+          </div>
+          <div
+            class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-flex d-lg-flex justify-content-center align-items-center"
+          >
+            <div class="text-center">
+              <p class="top-header_middle-text">Ekspresowa wysyłka</p>
+            </div>
+          </div>
+          <div
+            class="col-2 col-sm-4 col-md-3 col-lg-4 d-flex justify-content-end align-items-center"
+          >
+            <span
+              class="user-menu d-block d-lg-none"
+              @click="openedAccountMenu = !openedAccountMenu"
             >
-              Użytkownicy
-            </router-link>
-          </vs-navbar-item>
-          <vs-navbar-item :active="active === 'Settings'">
-            <router-link
-              exact-active-class="active"
-              tag="span"
-              :to="{ name: 'Settings' }"
+              <svg-icon icon="user" />
+            </span>
+            <ul
+              :class="[
+                'customer-links list-inline',
+                { 'd-block': openedAccountMenu }
+              ]"
             >
-              Ustawienia
-            </router-link>
-          </vs-navbar-item>
+              <template v-if="!isLogged">
+                <li>
+                  <router-link :to="{ name: 'Login' }">
+                    Logowanie
+                  </router-link>
+                </li>
+                <li>
+                  <router-link :to="{ name: 'Register' }">
+                    Rejestracja
+                  </router-link>
+                </li>
+              </template>
+              <template v-else>
+                <li>
+                  <router-link :to="{ name: 'Settings' }">
+                    Konto
+                  </router-link>
+                </li>
 
-          <vs-navbar-item @click="logoutUser">
-            Wyloguj
-          </vs-navbar-item>
-        </template>
-      </vs-navbar-group>
-    </template>
-  </vs-navbar>
+                <li>
+                  <span class="c-pointer" @click="logoutUser">Wyloguj</span>
+                </li>
+              </template>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-wrap classicHeader animated d-flex">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <!--Desktop Logo-->
+          <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
+            <router-link :to="{ name: 'Home' }">
+              <img
+                src="../assets/images/logo.svg"
+                alt="Belle Multipurpose Html Template"
+                title="Belle Multipurpose Html Template"
+              />
+            </router-link>
+          </div>
+          <!--End Desktop Logo-->
+          <div class="col-2 col-sm-3 col-md-3 col-lg-8">
+            <div class="d-block d-lg-none">
+              <button
+                :class="[
+                  'btn--link site-header__menu js-mobile-nav-toggle',
+                  'mobile-nav--' + (!openedMobileMenu ? 'open' : 'close')
+                ]"
+                @click="openedMobileMenu = !openedMobileMenu"
+              >
+                <i class="fas fa-bars" />
+              </button>
+            </div>
+            <!--Desktop Menu-->
+            <nav class="grid__item" id="AccessibleNav">
+              <!-- for mobile -->
+              <ul id="siteNav" class="site-nav medium center hidearrow">
+                <li class="lvl1">
+                  <router-link :to="{ name: 'Home' }">
+                    Główna
+                  </router-link>
+                </li>
+                <li class="lvl1">
+                  <router-link :to="{ name: 'Products' }">
+                    Produkty
+                  </router-link>
+                </li>
+              </ul>
+            </nav>
+            <!--End Desktop Menu-->
+          </div>
+          <!--Mobile Logo-->
+          <div
+            class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo"
+          >
+            <div class="logo">
+              <router-link :to="{ name: 'Home' }">
+                <img
+                  src="../assets/images/logo.svg"
+                  alt="Belle Multipurpose Html Template"
+                  title="Belle Multipurpose Html Template"
+                />
+              </router-link>
+            </div>
+          </div>
+          <!--Mobile Logo-->
+          <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+            <cart />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      :class="['mobile-nav-wrapper', { active: openedMobileMenu }]"
+      role="navigation"
+    >
+      <div
+        class="closemobileMenu d-flex justify-content-between align-items-center"
+        @click="openedMobileMenu = false"
+      >
+        <span>Zamknij Menu</span><i class="fas fa-times"></i>
+      </div>
+      <ul id="MobileNav" class="mobile-nav">
+        <li class="lvl1">
+          <router-link :to="{ name: 'Home' }">Główna</router-link>
+        </li>
+        <li class="lvl1">
+          <router-link :to="{ name: 'Products' }">Produkty</router-link>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import translateErrorMessage from "@/utils/errorTranslations";
 import { User } from "@/types/types";
 import Cart from "@/components/Cart.vue";
+import SvgIcon from "@/components/SvgIcon.vue";
 const authModule = namespace("auth");
 const appModule = namespace("app");
 const orderModule = namespace("order");
 
-@Component({ components: { Cart } })
+@Component({ components: { SvgIcon, Cart } })
 export default class NavBar extends Vue {
   @authModule.Getter("isLogged") isLogged!: boolean;
   @authModule.Getter("userProfile") userProfile!: User | null;
@@ -109,6 +167,8 @@ export default class NavBar extends Vue {
   @appModule.Action("stopLoading") stopLoading: any;
   @orderModule.Getter("countProductsInCart") countProductsInCart!: number;
 
+  openedMobileMenu = false;
+  openedAccountMenu = false;
   redirectTo(name: string) {
     if (this.$route.name !== name) this.$router.push({ name: name });
   }
@@ -136,41 +196,11 @@ export default class NavBar extends Vue {
       this.stopLoading();
     }
   }
+  @Watch("$route")
+  changedRoute() {
+    this.openedMobileMenu = false;
+  }
 }
 </script>
 
-<style lang="scss" scoped>
-.navbar--brand {
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-.vs-navbar__group i {
-  vertical-align: middle;
-}
-
-.cart {
-  position: relative;
-  &__details {
-    display: none;
-    position: absolute;
-    left: calc(-165px + 50%);
-    top: calc(100% - 10px);
-    width: 300px;
-    padding: 15px;
-  }
-  &:hover .cart__details {
-    display: block;
-  }
-}
-</style>
-<style lang="scss">
-.cart {
-  .vs-card {
-    border: 1px rgb(46, 53, 74) solid;
-    top: 5px;
-    &:hover {
-      transform: translate(0);
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

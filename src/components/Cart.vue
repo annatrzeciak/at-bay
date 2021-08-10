@@ -1,54 +1,97 @@
 <template>
-  <div class="cart">
-    <vs-card dark>
-      <template #title>
-        <vs-row align="center" justify="space-between">
-          <vs-col w="4">
-            <h3>Koszyk</h3>
-          </vs-col>
-          <vs-col w="7">
-            <div class="cart__total">
-              razem:
-              <strong>{{ getConvertedNumber(totalCostInCart) }}</strong> zł
+  <div class="site-cart">
+    <span
+      class="site-header__cart"
+      @click="openedMiniProductsList = !openedMiniProductsList"
+    >
+      <svg-icon icon="bag" class="c-pointer" />
+      <span
+        v-if="countProductsInCart"
+        id="CartCount"
+        class="site-header__cart-count"
+        data-cart-render="item_count"
+        >{{ countProductsInCart }}</span
+      >
+    </span>
+    <div
+      id="header-cart"
+      :class="['block block-cart', { 'd-block': openedMiniProductsList }]"
+    >
+      <ul class="mini-products-list">
+        <li class="item d-flex" v-for="(item, i) in cart" :key="i">
+          <div class="product-image">
+            <img
+              :src="item.product.image"
+              :alt="item.product.name"
+              :title="item.product.name"
+            />
+          </div>
+          <div class="product-details">
+            <span class="remove" @click="removeProductFromCart(item)">
+              <i class="far fa-trash-alt"></i>
+            </span>
+            <div class="pName">{{ item.product.name }}</div>
+            <div class="variant-cart">Black / XL</div>
+            <div class="wrapQtyBtn">
+              <div class="qtyField">
+                <span class="label">Ilość:</span>
+                <div
+                  :class="['qtyBtn minus', { disabled: !item.count }]"
+                  @click.stop="subtractFromCart(item)"
+                  role="button"
+                >
+                  <i class="fas fa-minus"></i>
+                </div>
+                <input
+                  type="text"
+                  id="Quantity"
+                  name="quantity"
+                  :value="item.count"
+                  class="product-form__input qty"
+                />
+                <div
+                  role="button"
+                  class="qtyBtn plus"
+                  @click.stop="++item.count"
+                >
+                  <i class="fas fa-plus"></i>
+                </div>
+              </div>
             </div>
-          </vs-col>
-        </vs-row>
-      </template>
-      <template #text>
-        <table class="cart__products" v-if="cart.length">
-          <tbody>
-            <tr v-for="(item, i) in cart" :key="i">
-              <td class="cart-item__count">{{ item.count }}</td>
-              <td>x</td>
-              <td class="cart-item__name">{{ item.product.name }}</td>
-              <td class="cart-item__value">
-                <span>{{
-                  getConvertedNumber(item.count * item.product.price)
-                }}</span>
-                zł
-              </td>
-              <td
-                class="cart-item__remove"
-                @click="removeProductFromCart(item)"
-              >
-                <i class="bx bxs-trash" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="cart__products--empty" v-else>
+            <div class="priceRow">
+              <div class="product-price">
+                <span class="money"
+                  >{{ getConvertedNumber(item.product.price) }} zł</span
+                >
+              </div>
+            </div>
+          </div>
+        </li>
+        <div class="mb-3 text-center" v-if="!cart.length">
           Twój koszyk jest pusty
         </div>
-
-        <vs-button
-          v-if="$route.name !== 'FullCart'"
-          flat
-          @click="$router.push({ name: 'FullCart' })"
-        >
-          pokaż koszyk
-        </vs-button>
-      </template>
-    </vs-card>
+      </ul>
+      <div class="total" v-if="cart.length">
+        <div class="total-in">
+          <span class="label">Razem:</span
+          ><span class="product-price"
+            ><span class="money"
+              >{{ getConvertedNumber(totalCostInCart) }} zł</span
+            ></span
+          >
+        </div>
+        <div class="buttonSet text-center" v-if="cart.length">
+          <router-link
+            :to="{ name: 'FullCart' }"
+            class="btn btn-secondary btn--small"
+            >Pokaż koszyk</router-link
+          >
+          <button @click="submitCart" class="btn btn-secondary btn--small">
+            zamów
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -56,15 +99,20 @@ import { Component, Vue } from "vue-property-decorator";
 import { CartItem } from "@/types/types";
 import { namespace } from "vuex-class";
 import convertToTwoDecimalPlaces from "@/utils/convertNumberToTwoDecimalPlaces";
+import SvgIcon from "@/components/SvgIcon.vue";
 
 const orderModule = namespace("order");
 
-@Component({ components: {} })
+@Component({ components: { SvgIcon } })
 export default class Cart extends Vue {
   @orderModule.Getter("cart") cart!: Array<CartItem>;
   @orderModule.Getter("totalCostInCart") totalCostInCart!: number;
   @orderModule.Action("removeFromCart") removeFromCart!: any;
+  @orderModule.Getter("countProductsInCart") countProductsInCart!: number;
+  @orderModule.Action("sendCart") sendCart!: any;
+  @orderModule.Action("updateProductInCart") updateProductInCart!: any;
 
+  openedMiniProductsList = false;
   getConvertedNumber(number: number): string {
     return convertToTwoDecimalPlaces(number);
   }
@@ -80,46 +128,33 @@ export default class Cart extends Vue {
       });
     }
   }
+  changedCount(item: CartItem, event: any) {
+    const changedItem = { ...item };
+    if (event.target?.value) {
+      changedItem.count = Number(event.target?.value);
+      this.updateProductInCart(changedItem);
+    }
+  }
+  subtractFromCart(item: CartItem) {
+    if (item.count > 0) {
+      --item.count;
+    }
+  }
+  submitCart() {
+    this.sendCart({ cart: this.cart, remarks: "" });
+  }
 }
 </script>
 <style lang="scss" scoped>
-.cart {
-  button {
-    margin-top: 15px;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  &__total {
-    font-size: 1.2rem;
-    text-align: right;
-  }
-  &__products {
+.item {
+  img {
+    height: 100%;
     width: 100%;
-    &--empty {
-      text-align: center;
-    }
-    .cart-item {
-      td {
-        flex: 1;
-      }
-      &__name {
-        width: 65%;
-        text-transform: uppercase;
-        text-align: center;
-      }
-      &__value {
-        width: 25%;
-        font-weight: bold;
-        text-align: right;
-      }
-      &__remove {
-        position: relative;
-        top: 2px;
-        i:hover {
-          color: rgb(255, 71, 87);
-        }
-      }
-    }
+    object-position: center;
+    object-fit: cover;
+  }
+  .product-details *:not(.pName) {
+    user-select: none;
   }
 }
 </style>
