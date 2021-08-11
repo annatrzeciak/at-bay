@@ -1,4 +1,10 @@
+$fa-font-path: "/webfonts" !default;
+$slick-font-family: "false";
+$slick-font-path: "~slick-carousel/slick/fonts/";
+$slick-loader-path: "~slick-carousel/slick/";
+
 @import "~bootstrap/dist/css/bootstrap.css";
+@import "~slick-carousel/slick/slick", "~slick-carousel/slick/slick-theme";
 @import "template";
 
 .c-pointer {

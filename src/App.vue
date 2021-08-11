@@ -14,7 +14,7 @@ import { namespace } from "vuex-class";
 const authModule = namespace("auth");
 
 @Component({
-  components: { NavBar, Loading },
+  components: { NavBar, Loading }
 })
 export default class App extends Vue {
   @authModule.Getter("isLogged") isLogged!: boolean;

@@ -1,54 +1,83 @@
 <template>
-  <div class="home">
-    <header>
-      <div class="content">
-        <vs-row align="center">
-          <vs-col w="4" sm="12" offset="7">
-            <h1>Odkryj tradycyjne włoskie smaki</h1>
-            <p>
-              Nasze dusze podróżników i odkrywców, poprowadziły nas ku poznaniu
-              i unowocześnieniu tradycyjnych receptur włoskich. Uważamy, że
-              każda receptura nawet ta najbardziej tradycyjna powinna zostać
-              dostosowana do wymagań współczesnej kultury życia.
-            </p>
-          </vs-col>
-        </vs-row>
+  <div id="page-content">
+    <div class="slideshow slideshow-wrapper pb-section sliderFull">
+      <div class="home-slideshow">
+        <div class="slide">
+          <div class="blur-up lazyloaded bg-size">
+            <img
+              class="blur-up lazyloaded bg-img"
+              src="../assets/images/slideshow-banners/belle-banner1.jpg"
+              alt="Zobacz naszą nową kolekcję"
+              title="Zobacz naszą nową kolekcję"
+            />
+            <div class="slideshow__text-wrap slideshow__overlay classic bottom">
+              <div class="slideshow__text-content bottom">
+                <div class="wrap-caption center">
+                  <h2 class="h1 mega-title slideshow__title">
+                    Zobacz naszą nową kolekcję
+                  </h2>
+                  <span class="mega-subtitle slideshow__subtitle"
+                    >Dla wysokich i niskich, klasyczne lub nowoczesne. Każdy coś
+                    dla siebie znajdzie</span
+                  >
+                  <router-link :to="{ name: 'Products' }" tag="span" class="btn"
+                    >Zobacz</router-link
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slide">
+          <div class="blur-up lazyloaded bg-size">
+            <img
+              class="blur-up lazyloaded bg-img"
+              src="../assets/images/slideshow-banners/belle-banner2.jpg"
+              alt="Letnia kolekcja bikini"
+              title="Letnia kolekcja bikini"
+            />
+            <div class="slideshow__text-wrap slideshow__overlay classic bottom">
+              <div class="slideshow__text-content bottom">
+                <div class="wrap-caption center">
+                  <h2 class="h1 mega-title slideshow__title">
+                    Letnia kolekcja bikini
+                  </h2>
+                  <span class="mega-subtitle slideshow__subtitle"
+                    >Zaoszczędź do 50% tylko w ten weekend</span
+                  >
+                  <router-link :to="{ name: 'Products' }" tag="span" class="btn"
+                    >Zobacz</router-link
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </header>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+import $ from "jquery";
+import "slick-carousel";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({})
-export default class Home extends Vue {}
-</script>
-<style lang="scss" scoped>
-header {
-  min-height: calc(100vh - 44px);
-  background-image: linear-gradient(
-      rgba(0, 0, 0, 0.3) 0%,
-      rgba(0, 0, 0, 0.3) 100%
-    ),
-    url("../assets/header.jpg");
-  background-size: cover;
-  background-position: center;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  text-shadow: black 0px 0px 6px;
-  color: white;
-  font-size: 20px;
-  & > div {
-    width: 100%;
-    box-sizing: border-box;
-    @media (max-width: 900px) {
-      .vs-col--sm-12.vs-col--offset-7 {
-        margin-left: 0%;
-      }
-    }
+export default class Home extends Vue {
+  mounted() {
+    ($(".home-slideshow") as any).slick({
+      dots: false,
+      infinite: true,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      fade: true,
+      arrows: false,
+      autoplay: true,
+      autoplaySpeed: 4000,
+      lazyLoad: "ondemand"
+    });
   }
 }
-</style>
+</script>
+<style lang="scss" scoped></style>
