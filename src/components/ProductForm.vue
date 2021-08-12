@@ -1,3 +1,4 @@
+import {Currency} from "@/types/types";
 <template>
   <div>
     <form class="register__form center content-inputs" @submit.prevent="save">
@@ -77,7 +78,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Product } from "@/types/types";
 import { validationMixin } from "vuelidate";
-import { minLength, required, minValue } from "vuelidate/lib/validators";
+import { minLength, minValue, required } from "vuelidate/lib/validators";
+import { Currency } from "@/types/types";
 
 @Component({
   components: {},
@@ -94,6 +96,8 @@ import { minLength, required, minValue } from "vuelidate/lib/validators";
 })
 export default class ProductForm extends Vue {
   @Prop() product!: Product;
+
+  Currency = Currency;
   name = "";
   description = "";
   image = "";
@@ -107,8 +111,7 @@ export default class ProductForm extends Vue {
         ? this.product.description
         : "";
       this.price = this.product.price;
-      this.image = this.product.image ? this.product.image : "";
-      this.grams = this.product.grams;
+      this.image = this.product.images ? this.product.images[0] : "";
     }
   }
   get productObject(): Product {
@@ -116,10 +119,15 @@ export default class ProductForm extends Vue {
       uuid: "",
       name: this.name,
       description: this.description,
-      image: this.image,
+      images: [this.image],
       price: this.price,
-      grams: this.grams,
-      added: new Date().toDateString()
+      added: new Date().toDateString(),
+      category: [],
+      currency: Currency.PLN,
+      hot: false,
+      new: false,
+      options: [],
+      stars: 0
     };
   }
 
@@ -143,7 +151,6 @@ export default class ProductForm extends Vue {
     this.description = "";
     this.image = "";
     this.price = 0;
-    this.grams = 0;
   }
 }
 </script>

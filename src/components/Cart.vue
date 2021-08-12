@@ -37,7 +37,7 @@
                 <span class="label">Ilość:</span>
                 <div
                   :class="['qtyBtn minus', { disabled: !item.count }]"
-                  @click.stop="subtractFromCart(item)"
+                  @click="subtractFromCart(item)"
                   role="button"
                 >
                   <i class="fas fa-minus"></i>
@@ -52,7 +52,7 @@
                 <div
                   role="button"
                   class="qtyBtn plus"
-                  @click.stop="++item.count"
+                  @click="++item.count"
                 >
                   <i class="fas fa-plus"></i>
                 </div>

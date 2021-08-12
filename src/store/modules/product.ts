@@ -23,7 +23,32 @@ export const createInitialState = (): ProductState => ({
 const state = createInitialState();
 const getters = {
   lastAddedProducts: (state: ProductState) => state.lastAddedProducts,
-  products: (state: ProductState) => state.products
+  products: (state: ProductState) => state.products,
+  newArrivalsWoman: (state: ProductState) => {
+    if (!state.products) return null;
+    return state.products.filter(
+      (product: Product) =>
+        product.category.includes("woman") && product.category.includes("new")
+    );
+  },
+  newArrivalsMan: (state: ProductState) => {
+    if (!state.products) return null;
+    return state.products.filter(
+      product =>
+        product.category.includes("man") && product.category.includes("new")
+    );
+  },
+  newArrivalsSale: (state: ProductState) => {
+    if (!state.products) return null;
+    return state.products.filter(
+      product =>
+        product.category.includes("sale") && product.category.includes("new")
+    );
+  },
+  getProductByUuid: (state: ProductState) => (uuid: string) => {
+    if (!state.products) return null;
+    return state.products.find(product => product.uuid === uuid);
+  }
 };
 const mutations = {
   [ProductMutations.SET_PRODUCTS](
@@ -52,14 +77,7 @@ const actions = {
     product: Product
   ) => {
     try {
-      return fb.productsCollection.add({
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        grams: product.grams,
-        image: product.image,
-        added: product.added
-      });
+      return fb.productsCollection.add(product);
     } catch (e) {
       return Promise.reject(e);
     }

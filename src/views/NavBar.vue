@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class="header-wrap classicHeader animated d-flex">
+    <div id="navbar" class="header-wrap classicHeader animated d-flex">
       <div class="container-fluid">
         <div class="row align-items-center">
           <!--Desktop Logo-->
@@ -203,4 +203,8 @@ export default class NavBar extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#navbar {
+  position: static;
+}
+</style>

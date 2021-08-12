@@ -9,6 +9,7 @@ import Settings from "@/views/Account/Settings.vue";
 import Users from "@/views/Account/Users.vue";
 import FullCart from "@/views/FullCart.vue";
 import store from "@/store";
+import Product from "@/views/Products/Product.vue";
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,11 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Home",
     component: Home
+  },
+  {
+    path: "/produkty/:uuid",
+    name: "Product",
+    component: Product
   },
   {
     path: "/produkty",

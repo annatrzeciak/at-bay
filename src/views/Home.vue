@@ -55,6 +55,7 @@
         </div>
       </div>
     </div>
+    <home-new-arrivals-section />
   </div>
 </template>
 
@@ -62,10 +63,13 @@
 import $ from "jquery";
 import "slick-carousel";
 import { Component, Vue } from "vue-property-decorator";
+import HomeNewArrivalsSection from "@/views/Home/HomeNewArrivalsSection.vue";
 
-@Component({})
+@Component({
+  components: { HomeNewArrivalsSection }
+})
 export default class Home extends Vue {
-  mounted() {
+  mounted(): void {
     ($(".home-slideshow") as any).slick({
       dots: false,
       infinite: true,
@@ -80,4 +84,13 @@ export default class Home extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

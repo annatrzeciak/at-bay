@@ -2,10 +2,20 @@ export interface Product {
   uuid?: string;
   name: string;
   price: number;
-  grams: number;
+  sale?: number;
   description?: string;
-  image?: string;
-  added: string;
+  fullDescription?: string;
+  images?: Array<string>;
+  added?: string;
+  category: Array<string>;
+  stars: number;
+  new: boolean;
+  hot: boolean;
+  currency: Currency;
+  options: Array<{
+    size: string;
+    colors: Array<{ color: Color; count: number }>;
+  }>;
 }
 
 export interface User {
@@ -13,6 +23,18 @@ export interface User {
   name: string;
   email: number;
   role: UserRole;
+}
+export enum Currency {
+  PLN = "PLN",
+  EUR = "EUR"
+}
+export enum Color {
+  PINK = "pink",
+  BLACK = "black",
+  BLUE = "blue",
+  GREEN = "green",
+  RED = "red",
+  WHITE = "white"
 }
 
 export enum UserRole {
